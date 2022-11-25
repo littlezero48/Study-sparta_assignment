@@ -6,12 +6,14 @@ public class Transportaion {
     int stateNum;       // 지금 상태 0: 운행불가, 1: 운행가능, 2:제3의상태
     String state;
 
+    // 생성자
     public Transportaion (int refuelAmount){
         this.refuelAmount = refuelAmount;
         this.num =
         stateNum = 1;
     }
 
+    // 운행 시작
     public void run(){
         if(refuelAmount < 10){
             stateNum = 0;

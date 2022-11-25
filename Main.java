@@ -62,5 +62,6 @@ public class Main {
         System.out.println("--------------------------------택시 최종 요금");
         taxi.finalRateCaculate();
 
+        System.out.println("종료");
     }
 }

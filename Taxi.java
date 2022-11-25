@@ -6,7 +6,7 @@ public class Taxi extends Transportaion {
     int sumDistanceRate;           // 거리요금 총합
     String[] stateStr = {"운행불가", "일반", "운행중"};
 
-
+    // 생성자
     public Taxi (int refuelAmount){
         super(refuelAmount);
 
@@ -18,6 +18,7 @@ public class Taxi extends Transportaion {
         baseRate = 3300;
     }
 
+    // 운행 시작
     public void run(){
         super.run();
         state = stateStr[stateNum];

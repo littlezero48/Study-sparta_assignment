@@ -4,6 +4,7 @@ public class Bus extends Transportaion {
     int remainingSeat;
     String[] stateStr = {"차고지행","운행"};
 
+    // 생성자
     public Bus(int refuelAmount){
         super(refuelAmount);
         state = stateStr[stateNum];
@@ -13,6 +14,7 @@ public class Bus extends Transportaion {
         nowPassengerCnt = 0;
     }
 
+    // 운행 시작
     public void run(){
         super.run();
         state = stateStr[stateNum];
