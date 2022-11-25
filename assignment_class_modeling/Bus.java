@@ -1,3 +1,5 @@
+package assignment_class_modeling;
+
 public class Bus extends Transportaion {
     int maxPassengerCnt;
     int nowPassengerCnt;

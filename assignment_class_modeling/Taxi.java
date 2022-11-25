@@ -1,3 +1,5 @@
+package assignment_class_modeling;
+
 public class Taxi extends Transportaion {
     String destination;
     int basDistance = 3; // 3km

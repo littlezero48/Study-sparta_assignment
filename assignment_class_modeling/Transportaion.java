@@ -1,3 +1,5 @@
+package assignment_class_modeling;
+
 public class Transportaion {
     int num;            // 차량번호
     int baseRate;       // 기본요금
