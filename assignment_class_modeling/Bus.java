@@ -28,6 +28,7 @@ public class Bus extends Transportaion {
         state = stateStr[stateNum];
     }
 
+    // 승객 탑승
     public void passengerRiding(int personCnt){
         if(stateNum == 1){
             if(maxPassengerCnt > (nowPassengerCnt + personCnt)){
@@ -38,6 +39,8 @@ public class Bus extends Transportaion {
             }
         }
     }
+
+    // 속력변경 메소드 : Operator = '-','+'
     public void speedChange(char operator, int speed){
         super.speedChange(operator, speed);
     }

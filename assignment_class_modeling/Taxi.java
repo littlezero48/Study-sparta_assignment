@@ -32,6 +32,7 @@ public class Taxi extends Transportaion {
         state = stateStr[stateNum];
     }
 
+    // 승객 탑승
     public void passengerRiding(){
         if(stateNum == 1){
             stateNum = 2;
@@ -41,10 +42,12 @@ public class Taxi extends Transportaion {
         }
     }
 
+    // 속력변경 메소드 : Operator = '-','+'
     public void speedChange(char operator, int speed){
         super.speedChange(operator, speed);
     }
 
+    // 거리당 요금 추가 메소드
     public void plusPerRate(String destination, int distanceToDestination){
         this.destination = destination;
         System.out.println("목적지 : "+this.destination);
@@ -53,6 +56,7 @@ public class Taxi extends Transportaion {
         }
     }
 
+    // 최종 요금 출력 메소드
     public void finalRateCaculate (){
         int finalRate = baseRate + sumDistanceRate;
         System.out.println("최종 요금은 " + finalRate + "원 입니다");
