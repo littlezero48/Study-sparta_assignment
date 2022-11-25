@@ -1,7 +1,9 @@
 package assignment_class_modeling;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Transportaion {
-    int num;            // 차량번호
+    String num;            // 차량번호
     int baseRate;       // 기본요금
     int refuelAmount;   // 주유량
     int nowSpeed;       // 지금 속력
@@ -11,8 +13,10 @@ public class Transportaion {
     // 생성자
     public Transportaion (int refuelAmount){
         this.refuelAmount = refuelAmount;
-        this.num =
         stateNum = 1;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        Calendar dateTime = Calendar.getInstance();
+        num = sdf.format(dateTime.getTime());
     }
 
     // 운행 시작
