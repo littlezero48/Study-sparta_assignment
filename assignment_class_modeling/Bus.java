@@ -1,9 +1,9 @@
 package assignment_class_modeling;
 
 public class Bus extends Transportaion {
-    int maxPassengerCnt;
-    int nowPassengerCnt;
-    int remainingSeat;
+    int maxPassengerCnt;        // 최대 탑승 인원
+    int nowPassengerCnt;        // 현재 탑승 인원
+    int remainingSeat;          // 남은 좌석 수
     String[] stateStr = {"차고지행","운행"};
 
     // 생성자

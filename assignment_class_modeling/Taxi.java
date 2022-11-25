@@ -2,10 +2,10 @@ package assignment_class_modeling;
 
 public class Taxi extends Transportaion {
     String destination;
-    int basDistance = 3; // 3km
-    int distanceToDestination;
-    int perDistanceRate = 200;  // 거리당 요금
-    int sumDistanceRate;           // 거리요금 총합
+    int basDistance = 3;            // 기본요금 거리 3km
+    int distanceToDestination;      // 목적지까지의 거리
+    int perDistanceRate = 200;      // 거리당 요금
+    int sumDistanceRate;            // 거리요금 총합
     String[] stateStr = {"운행불가", "일반", "운행중"};
 
     // 생성자
@@ -50,9 +50,10 @@ public class Taxi extends Transportaion {
     // 거리당 요금 추가 메소드
     public void plusPerRate(String destination, int distanceToDestination){
         this.destination = destination;
+        this.distanceToDestination = distanceToDestination;
         System.out.println("목적지 : "+this.destination);
         if(distanceToDestination > basDistance){
-            sumDistanceRate =  perDistanceRate = (distanceToDestination - basDistance) * perDistanceRate;
+            sumDistanceRate =  perDistanceRate = (this.distanceToDestination - basDistance) * perDistanceRate;
         }
     }
 

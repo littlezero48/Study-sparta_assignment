@@ -3,7 +3,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Transportaion {
-    String num;            // 차량번호
+    String num;         // 차량번호
     int baseRate;       // 기본요금
     int refuelAmount;   // 주유량
     int nowSpeed;       // 지금 속력
