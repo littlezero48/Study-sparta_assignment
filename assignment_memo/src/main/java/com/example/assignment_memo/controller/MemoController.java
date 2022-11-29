@@ -1,6 +1,7 @@
 package com.example.assignment_memo.controller;
 
 import com.example.assignment_memo.dto.MemoRequestDto;
+import com.example.assignment_memo.dto.MemoResponseDto;
 import com.example.assignment_memo.dto.PublicDto;
 import com.example.assignment_memo.entity.Memo;
 import com.example.assignment_memo.service.MemoService;
@@ -25,12 +26,12 @@ public class MemoController {
     }
 
     @PostMapping("/api/memoWrite")  //POST방식
-    public MemoRequestDto memoWrite (@RequestBody MemoRequestDto dto) {
+    public MemoResponseDto memoWrite (@RequestBody MemoRequestDto dto) {
         return memoService.writeMemo(dto);
     }
 
     @PutMapping("/api/memoModify/{id}") // PUT방식
-    public MemoRequestDto memoModify(@PathVariable Long id, @RequestBody MemoRequestDto dto) {
+    public MemoResponseDto memoModify(@PathVariable Long id, @RequestBody MemoRequestDto dto) {
         return memoService.modifyMemo(id, dto);
     }
 

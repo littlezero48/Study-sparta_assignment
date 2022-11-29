@@ -14,4 +14,5 @@ public class PublicDto {
         this.result = result;
         this.message = massage;
     }
+
 }

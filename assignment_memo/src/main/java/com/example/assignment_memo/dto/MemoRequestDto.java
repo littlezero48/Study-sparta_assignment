@@ -1,11 +1,9 @@
 package com.example.assignment_memo.dto;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Setter // Class 모든 필드의 Setter method를 생성
 @Getter // Class 모든 필드의 Getter method를 생성
 public class MemoRequestDto extends PublicDto { // Dto를 통해 클라이언트에서 데이터가 오고 서버로부터 데이터가 나가는 객체
     private Long id;
@@ -15,4 +13,5 @@ public class MemoRequestDto extends PublicDto { // Dto를 통해 클라이언트
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    
 }
