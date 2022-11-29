@@ -21,7 +21,7 @@ public class MemoController {
     public ModelAndView home(){ return new ModelAndView("index"); }             // 클래스 자체가 Model과 View를 같이 하는 클래스구나
 
     @GetMapping("/api/memos") // GET방식
-    public List<Memo> memoRequest (){ // @RequestBody 어노테이션으로 body의 내용을 가져옴
+    public List<MemoResponseDto> memoRequest (){ // @RequestBody 어노테이션으로 body의 내용을 가져옴
         return memoService.getMemos();
     }
 

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service    // 이건 서비스다! 선언
@@ -17,12 +18,16 @@ public class MemoService {
 
     private final MemoRepository memoRepository;      // 메모 레포지토리를 사용할 수 있게 객체 선언 // 서비스든 컨트롤이든 클래스 연결할때 final 선언안해주면 오류남
 
-    @Transactional(readOnly = true) // 오직 읽기
-    public List<Memo> getMemos(){
-        return memoRepository.findAllByOrderByModifiedAtDesc(); // 아 여기서 데이터 값을 가져오는 메소드를 커스텀 하려면 리포지토리에서 작성해야 한다.
+    public List<MemoResponseDto> getMemos(){
+        List<Memo> memolist = memoRepository.findAllByOrderByModifiedAtDesc(); // 아 여기서 데이터 값을 가져오는 메소드를 커스텀 하려면 리포지토리에서 작성해야 한다.
+        List<MemoResponseDto> exportDtoList = new ArrayList<>();
+        for(Memo memo : memolist){
+            MemoResponseDto responseDto = new MemoResponseDto(memo);
+            exportDtoList.add(responseDto);
+        }
+        return exportDtoList;
     }
 
-    @Transactional
     public MemoResponseDto writeMemo(MemoRequestDto dto){
         Memo newOne = new Memo(dto);    // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
         memoRepository.save(newOne);    // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
@@ -31,7 +36,7 @@ public class MemoService {
         return exportDto;                  // 결과값을 다시 리턴
     }
 
-    @Transactional
+    @Transactional  // 트랜잭셔널은 DB의 값을 변화를 줄때 필요한데 다른 DB CRUD에는 이게 기본적으로 있는데 update만 없다고..
     public MemoResponseDto modifyMemo (Long id, MemoRequestDto dto) {
         //findById(id) :  id 기준으로 검색
         //orElseTrow() : 검색시 에러 발생시 예외를 던진다
@@ -48,7 +53,6 @@ public class MemoService {
         return exportDto;
     }
 
-    @Transactional //
     public PublicDto deleteMemo (Long id, String pw) {
         Memo updateOne = memoRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
