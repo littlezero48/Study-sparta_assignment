@@ -1,0 +1,122 @@
+{
+	"info": {
+		"_postman_id": "a80a2c74-87cf-4e51-af90-d8d7095dd3bd",
+		"name": "Memo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24654654"
+	},
+	"item": [
+		{
+			"name": "api/memos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/memos",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"memos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/memoWrite",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"제목1\",\r\n    \"author\" : \"글쓴이1\",\r\n    \"password\" : \"12345\",\r\n    \"content\" : \"스프링 과제입니다\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/memoWrite",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"memoWrite"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/memoModify",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"제목1234\",\r\n    \"author\" : \"소영1234\",\r\n    \"password\" : \"12345\",\r\n    \"content\" : \"수정해봅시다\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/memoModify/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"memoModify",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/memoDelete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\" : \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/memoDelete/5",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"memoDelete",
+						"5"
+					],
+					"query": [
+						{
+							"key": "password",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
