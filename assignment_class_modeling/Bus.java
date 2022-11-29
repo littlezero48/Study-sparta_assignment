@@ -29,11 +29,11 @@ public class Bus extends Transportaion {
     }
 
     // 승객 탑승
-    public void passengerRiding(int personCnt){
+    public void passengerRiding(int nowPassengerCnt){
         if(stateNum == 1){
-            if(maxPassengerCnt > (nowPassengerCnt + personCnt)){
-                nowPassengerCnt += personCnt;
-                remainingSeat = maxPassengerCnt - nowPassengerCnt;
+            if(maxPassengerCnt > (this.nowPassengerCnt + nowPassengerCnt)){
+                this.nowPassengerCnt += nowPassengerCnt;
+                remainingSeat = maxPassengerCnt - this.nowPassengerCnt;
             } else {
                 System.out.println("최대 승객 수가 초과하여 탑승할 수 없습니다.");
             }

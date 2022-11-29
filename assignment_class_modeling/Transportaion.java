@@ -10,6 +10,7 @@ public class Transportaion {
     int stateNum;       // 지금 상태 0: 운행불가, 1: 운행가능, 2:제3의상태
     String state;
 
+
     // 생성자
     public Transportaion (int refuelAmount){
         this.refuelAmount = refuelAmount;
@@ -17,6 +18,8 @@ public class Transportaion {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         Calendar dateTime = Calendar.getInstance();
         num = sdf.format(dateTime.getTime());
+        nowSpeed = 0;
+
     }
 
     // 운행 시작

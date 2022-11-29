@@ -65,5 +65,8 @@ public class Main {
         taxi.finalRateCaculate();
 
         System.out.println("종료");
+
+        Transportaion trans = new Transportaion(500);
+
     }
 }
