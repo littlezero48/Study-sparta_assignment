@@ -3,7 +3,6 @@ package com.example.assignment_memo.controller;
 import com.example.assignment_memo.dto.MemoRequestDto;
 import com.example.assignment_memo.dto.MemoResponseDto;
 import com.example.assignment_memo.dto.PublicDto;
-import com.example.assignment_memo.entity.Memo;
 import com.example.assignment_memo.service.MemoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,17 +10,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@RestController          // 컨트롤러 선언
-@RequiredArgsConstructor // 생성자 자동 주입
+@RestController             // 컨트롤러 선언
+@RequiredArgsConstructor    // 생성자 자동 주입
 public class MemoController {
 
     private final MemoService memoService;
 
     @GetMapping("/")
-    public ModelAndView home(){ return new ModelAndView("index"); }             // 클래스 자체가 Model과 View를 같이 하는 클래스구나
+    public ModelAndView home(){ return new ModelAndView("index"); }               // 클래스 자체가 Model과 View를 같이 하는 클래스구나
 
     @GetMapping("/api/memos") // GET방식
-    public List<MemoResponseDto> memoRequest (){ // @RequestBody 어노테이션으로 body의 내용을 가져옴
+    public List<MemoResponseDto> memoRequest (){                                            // @RequestBody 어노테이션으로 body의 내용을 가져옴
         return memoService.getMemos();
     }
 

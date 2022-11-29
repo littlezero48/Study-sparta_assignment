@@ -3,7 +3,7 @@ package com.example.assignment_memo.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter // Class 모든 필드의 Setter method를 생성
+@Setter     // Class 모든 필드의 Setter method를 생성
 @Getter
 public class PublicDto {
 

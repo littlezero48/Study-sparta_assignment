@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 public class Memo extends Timestamped {
 
     @Id     // ID임을 선언
-    @GeneratedValue(strategy = GenerationType.AUTO) // 값 자동 생성 , 생성 전략 : 자동 증감
-    private Long id;    // int값이 면 안되나?? 왜 repository에서 타입에 안되지
+    @GeneratedValue(strategy = GenerationType.AUTO)     // 값 자동 생성 , 생성 전략 : 자동 증감
+    private Long id;                                    // int값이 면 안되나?? 왜 repository에서 타입에 안되지
 
-    @Column(nullable = false) // 컬럼 설정 , null값 허용 선택 : 불가
+    @Column(nullable = false)                           // 컬럼 설정 , null값 허용 선택 : 불가
     private String title;
 
     @Column(nullable = false)
@@ -24,7 +24,7 @@ public class Memo extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    @JsonIgnore // 이 어노테이션을 쓰면 화면으로 가는 DTO에 노출되지 않는다.
+    @JsonIgnore                                         // 이 어노테이션을 쓰면 화면으로 가는 DTO에 노출되지 않는다.
     @Column(nullable = false)
     private String password;
 
@@ -32,7 +32,7 @@ public class Memo extends Timestamped {
     // 타임스탬프는 extends 한 이후로 어떻게 쓰지? 자동으로 column 저장되나? 오 여기서 별도의 처리를 해주지 않아도 컬럼으로 추가된다.
     // 그런데 값이 안들어감. 실행클래스에서 @EnableJpaAuditing를 써야 시간 감시를 시작함 유효값이 들어가기 시작.
 
-    public Memo(MemoRequestDto dto){    // 생성자
+    public Memo(MemoRequestDto dto){                    // 생성자
 
         this.title = dto.getTitle();
         this.author = dto.getAuthor();
@@ -41,7 +41,7 @@ public class Memo extends Timestamped {
 
     }
 
-    public void update(MemoRequestDto dto){     // 수정 메소드
+    public void update(MemoRequestDto dto){             // 수정 메소드
 
         this.title = dto.getTitle();
         this.author = dto.getAuthor();
