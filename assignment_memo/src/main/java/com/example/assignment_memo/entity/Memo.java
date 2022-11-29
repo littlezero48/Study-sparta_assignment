@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter // Class 모든 필드의 Getter method를 생성
 @Entity // Entity임을 선언
-@NoArgsConstructor // @NoArgsConstructor 어노테이션은 파라미터가 없는 기본 생성자를 생성
+@NoArgsConstructor // @NoArgsConstructor : 파라미터가 없는 기본 생성자를 생성
 public class Memo extends Timestamped {
 
     @Id     // ID임을 선언

@@ -67,5 +67,5 @@ public class MemoService {
     }
 }
 
-// 역직렬화? C
+// keyword : 직렬화(Serialization) 와 역직렬화(Deserialization)
 // 트랜잭션 - DB를 다루는 특정행동, DB가 변화하면 트랜잭션이 생김
