@@ -28,17 +28,17 @@ public class MemoController {
         return memoService.getMemos(id);
     }
 
-    @PostMapping("/api/memoWrite")  //POST방식
+    @PostMapping("/api/memos")  //POST방식
     public MemoResponseDto memoWrite (@RequestBody MemoRequestDto dto) {
         return memoService.writeMemo(dto);
     }
 
-    @PutMapping("/api/memoModify/{id}") // PUT방식
+    @PutMapping("/api/memos/{id}") // PUT방식
     public MemoResponseDto memoModify(@PathVariable Long id, @RequestBody MemoRequestDto dto) {
         return memoService.modifyMemo(id, dto);
     }
 
-    @DeleteMapping("/api/memoDelete/{id}")  // DELETE방식
+    @DeleteMapping("/api/memos/{id}")  // DELETE방식
     public PublicDto memoDelete(@PathVariable Long id, @RequestBody MemoRequestDto dto) {
         return memoService.deleteMemo(id, dto.getPassword());
     }
