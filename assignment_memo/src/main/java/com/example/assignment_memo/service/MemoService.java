@@ -39,7 +39,6 @@ public class MemoService {
         Memo newOne = new Memo(dto);                                        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
         memoRepository.save(newOne);                                        // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
         MemoResponseDto exportDto = new MemoResponseDto(newOne);            // Entity -> Dto로 전환
-        exportDto.setResult("Success","글을 입력했습니다");
         return exportDto;                                                   // 결과값을 다시 리턴
     }
 
@@ -56,7 +55,6 @@ public class MemoService {
         MemoResponseDto exportDto = new MemoResponseDto(updateOne);
         if(updateOne.getPassword().equals(dto.getPassword())){              // DB에서 가져온 패스워드랑 클라이언트에서 들고온 패스워드를 비교
             updateOne.update(dto);                                          // update는 entity에 새로 정의한 함수
-            exportDto.setResult("Success","글을 성공적으로 수정했습니다");
         }
         return exportDto;
     }

@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class MemoResponseDto extends PublicDto {
+public class MemoResponseDto {
 
     private Long id;
     private String title;
