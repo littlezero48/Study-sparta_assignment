@@ -21,7 +21,6 @@ bin/
 .idea
 *.iws
 *.iml
-!postman_collection/assignment_memo.iml
 *.ipr
 out/
 !**/src/main/**/out/
