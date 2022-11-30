@@ -28,6 +28,13 @@ public class MemoService {
         return exportDtoList;
     }
 
+    public MemoResponseDto getMemos(Long id){                               // 해당 글 하나만 읽기
+        Memo getOne = memoRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
+        );
+        return new MemoResponseDto(getOne);                                 // Entity -> Dto로 전환
+    }
+
     public MemoResponseDto writeMemo(MemoRequestDto dto){
         Memo newOne = new Memo(dto);                                        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
         memoRepository.save(newOne);                                        // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
@@ -38,6 +45,7 @@ public class MemoService {
 
     @Transactional  // 트랜잭셔널은 DB의 값을 변화를 줄때 필요한데 다른 DB CRUD에는 이게 기본적으로 있는데 update만 없다고..
     public MemoResponseDto modifyMemo (Long id, MemoRequestDto dto) {
+
         //findById(id) :  id 기준으로 검색
         //orElseTrow() : 검색시 에러 발생시 예외를 던진다
             // () ->  : optional 인자가 null경우
