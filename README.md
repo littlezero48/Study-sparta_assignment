@@ -1,5 +1,5 @@
 # sparta_assignment
-항해99 숙제 제출 깃헙입니다.
+항해99 숙제 제출 레파지토리입니다.
 
 ---
 * (22/11/25)   `assignment_class_modeling` </br></br>
