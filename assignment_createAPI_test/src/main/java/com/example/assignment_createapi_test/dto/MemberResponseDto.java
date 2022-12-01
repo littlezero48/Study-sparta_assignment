@@ -2,8 +2,10 @@ package com.example.assignment_createapi_test.dto;
 
 import com.example.assignment_createapi_test.entity.Member;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class MemberResponseDto {
     private Long id;
     private String name;
