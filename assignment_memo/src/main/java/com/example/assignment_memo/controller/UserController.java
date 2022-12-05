@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RequestMapping("/api/user")
 @RestController // @ResponseBody로 ㅣ
@@ -20,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public PublicDto signup(@RequestBody SignupRequestDto dto){
+    public PublicDto signup(@RequestBody @Valid SignupRequestDto dto){
         return userService.signup(dto);
     }
 

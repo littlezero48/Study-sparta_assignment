@@ -48,9 +48,9 @@ public class MemoService {
         PublicDto exportDto = new PublicDto();
 
         if(token != null){                                          //token없으면 글 생성 불가
-            validateUser(token);
+            User user = validateUser(token);
 
-            Memo newOne = new Memo(dto);                                        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
+            Memo newOne = new Memo(dto, user.getUsername());                                        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
             memoRepository.save(newOne);                                        // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
             exportDto = new MemoResponseDto(newOne);                  // Entity -> Dto로 전환
             return exportDto;                                                   // 결과값을 다시 리턴
