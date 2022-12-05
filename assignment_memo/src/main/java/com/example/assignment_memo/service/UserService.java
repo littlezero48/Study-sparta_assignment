@@ -4,17 +4,19 @@ import com.example.assignment_memo.dto.LoginRequestDto;
 import com.example.assignment_memo.dto.PublicDto;
 import com.example.assignment_memo.dto.SignupRequestDto;
 import com.example.assignment_memo.entity.User;
+import com.example.assignment_memo.jwt.JwtUtil;
 import com.example.assignment_memo.repository.UserRepository;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     public PublicDto signup(SignupRequestDto dto){
         String username = dto.getUsername();
@@ -23,8 +25,7 @@ public class UserService {
 
         Optional<User> existUser = userRepository.findByUsername(username);
         if(existUser.isPresent()){
-            exportDto.setResult(200, "중복된 사용자가 존재합니다");
-            return exportDto;
+            throw new IllegalArgumentException("중복된 사용자가 존재합니다");
         }
 
         User user = new User(username, password);
@@ -47,7 +48,8 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
         }
 
-//        header.addHeader(); 여기서 추가해야함
+        // HTTP Header에 생성한 토큰을 붙여 보내기!
+        header.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername()));  // 메소드사용하려면 의존성주입 먼저
 
         exportDto.setResult(200, "로그인에 성공했습니다.");
         return exportDto;

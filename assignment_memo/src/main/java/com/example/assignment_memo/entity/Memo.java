@@ -2,9 +2,10 @@ package com.example.assignment_memo.entity;
 
 import com.example.assignment_memo.dto.MemoRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Getter // Class 모든 필드의 Getter method를 생성
 @Entity // Entity임을 선언

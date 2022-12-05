@@ -1,8 +1,9 @@
 package com.example.assignment_memo.entity;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity(name = "users")
 @Getter
