@@ -1,6 +1,10 @@
 package com.example.assignment_memo.controller;
 
+import com.example.assignment_memo.dto.LoginRequestDto;
 import com.example.assignment_memo.dto.PublicDto;
+import com.example.assignment_memo.dto.SignupRequestDto;
+import com.example.assignment_memo.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,11 +20,11 @@ public class UserController {
 
     @PostMapping("/signup")
     public PublicDto signup(@RequestBody SignupRequestDto dto){
-        return new userService.signup(dto);
+        return userService.signup(dto);
     }
 
     @PostMapping("/login")
-    public PublicDto login(@RequestBody LoginRequestDto dtd){
-        return new userService.login(dto);
+    public PublicDto login(@RequestBody LoginRequestDto dto, HttpServletResponse header){
+        return userService.login(dto, header);
     }
 }

@@ -67,7 +67,7 @@ public class MemoService {
         PublicDto result = new PublicDto();                                 // 메세지 처리를 위한 dto 객체 생성
         if (updateOne.getPassword().equals(pw)) {                           // 비밀번호 대조
             memoRepository.deleteById(id);                                  // delete자체에 Transactional을 생기게 하는 로직이 있다
-            result.setResult("Success","글을 성공적으로 지웠습니다");
+            result.setResult(200,"글 삭제");
         }
         return result;
     }
