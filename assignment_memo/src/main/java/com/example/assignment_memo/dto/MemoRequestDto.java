@@ -9,7 +9,6 @@ public class MemoRequestDto extends PublicDto { // Dto를 통해 클라이언트
     private Long id;
     private String title;       // Dto는 항상 private로 접근 제한하는 건가?
     private String username;
-    private String password;    // Entity에 @JsonIgnore 처리되어있음
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

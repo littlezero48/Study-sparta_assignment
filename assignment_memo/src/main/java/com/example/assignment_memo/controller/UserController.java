@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public PublicDto login(@RequestBody LoginRequestDto dto, HttpServletResponse header){
-        return userService.login(dto, header);
+    public PublicDto login(@RequestBody LoginRequestDto dto, HttpServletResponse response){
+        return userService.login(dto, response);
     }
 }

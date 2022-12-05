@@ -1,7 +1,6 @@
 package com.example.assignment_memo.entity;
 
 import com.example.assignment_memo.dto.MemoRequestDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,9 +24,9 @@ public class Memo extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    @JsonIgnore                                         // 이 어노테이션을 쓰면 화면으로 가는 DTO에 노출되지 않는다.
-    @Column(nullable = false)
-    private String password;
+//    @JsonIgnore                                         // 이 어노테이션을 쓰면 화면으로 가는 DTO에 노출되지 않는다.
+//    @Column(nullable = false)
+//    private String password;
 
 
     // 타임스탬프는 extends 한 이후로 어떻게 쓰지? 자동으로 column 저장되나? 오 여기서 별도의 처리를 해주지 않아도 컬럼으로 추가된다.
@@ -38,7 +37,6 @@ public class Memo extends Timestamped {
         this.title = dto.getTitle();
         this.username = dto.getUsername();
         this.content = dto.getContent();
-        this.password = dto.getPassword();
 
     }
 

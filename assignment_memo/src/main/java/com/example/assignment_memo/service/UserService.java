@@ -21,6 +21,7 @@ public class UserService {
     public PublicDto signup(SignupRequestDto dto){
         String username = dto.getUsername();
         String password = dto.getPassword();
+        String role = "ADMIN";
         PublicDto exportDto = new PublicDto();
 
         Optional<User> existUser = userRepository.findByUsername(username);
@@ -28,14 +29,14 @@ public class UserService {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다");
         }
 
-        User user = new User(username, password);
+        User user = new User(username, password, role);
         userRepository.save(user);
 
         exportDto.setResult(200, "가입에 성공했습니다.");
         return exportDto;
     }
 
-    public PublicDto login(LoginRequestDto dto, HttpServletResponse header){
+    public PublicDto login(LoginRequestDto dto, HttpServletResponse response){
         String username = dto.getUsername();
         String password = dto.getPassword();
         PublicDto exportDto = new PublicDto();
@@ -49,7 +50,7 @@ public class UserService {
         }
 
         // HTTP Header에 생성한 토큰을 붙여 보내기!
-        header.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername()));  // 메소드사용하려면 의존성주입 먼저
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));  // 메소드사용하려면 의존성주입 먼저
 
         exportDto.setResult(200, "로그인에 성공했습니다.");
         return exportDto;

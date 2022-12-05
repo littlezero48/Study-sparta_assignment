@@ -7,6 +7,7 @@ import com.example.assignment_memo.service.MemoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController             // 컨트롤러 선언
@@ -29,8 +30,8 @@ public class MemoController {
     }
 
     @PostMapping("/api/memos")  //POST방식
-    public MemoResponseDto memoWrite (@RequestBody MemoRequestDto dto) {
-        return memoService.writeMemo(dto);
+    public PublicDto memoWrite (@RequestBody MemoRequestDto dto, HttpServletRequest request) {
+        return memoService.writeMemo(dto, request);
     }
 
     @PutMapping("/api/memos/{id}") // PUT방식
@@ -40,7 +41,8 @@ public class MemoController {
 
     @DeleteMapping("/api/memos/{id}")  // DELETE방식
     public PublicDto memoDelete(@PathVariable Long id, @RequestBody MemoRequestDto dto) {
-        return memoService.deleteMemo(id, dto.getPassword());
+//        return memoService.deleteMemo(id, dto.getPassword());
+        return null;
     }
 }
 

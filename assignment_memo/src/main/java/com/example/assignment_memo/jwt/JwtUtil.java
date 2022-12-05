@@ -39,15 +39,13 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String createToken(String username){
+    public String createToken(String username, String role){
         Date date = new Date();
-
-        String role = "ADMIN"; // 임시 롤 enum으로 만들어줘야
 
         // 토큰 Builder반환
         return BEARER_PREFIX +      // BEARER : 인증 타입중 하나로 JWT 또는 OAuth에 대한 토큰을 사용 (RFC 6750 문서 확인)
                 Jwts.builder()
-                        .setSubject(username)   // 토큰 용도?
+                        .setSubject(username)   // 토큰 용도
                         .claim(AUTHORIZATION_KEY, role) // payload에 들어갈 정보 조각들
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))   // 만료시간 설정
                         .setIssuedAt(date)  // 토큰 발행일
@@ -55,7 +53,7 @@ public class JwtUtil {
                         .compact(); // 토큰 생성
     }
 
-    // Header에서 토큰 가져오기 ?? 어디서 쓰고 있는거지
+    // Header에서 토큰 가져오기
     public String resolveToken(HttpServletRequest request){    // Http프로토콜의 request정보를 서블릿에게 전달하기 위한 목적으로 사용하는 매개변수
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER); // 우리가 위에서 설정한 "Authorization"의 헤더를 가져옴
 
@@ -76,7 +74,7 @@ public class JwtUtil {
             // 서명 검증을 위한 키를 지정 setSigningKey()
             // 스레드에 안전한 JwtPaser를 리턴하기 위해 JwtPaserBuilder의 build()메서드를 호출
             // 서버의 시크릿키로 서명한 것을 토큰화한 jws인것인지 검증???? <-- 확인 더 필요
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException e) { // 전: 권한 없다면 발생 , 후: JWT가 올바르게 구성되지 않았다면 발생
             log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
