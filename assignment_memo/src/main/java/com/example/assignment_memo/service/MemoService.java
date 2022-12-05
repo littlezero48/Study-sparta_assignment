@@ -58,7 +58,6 @@ public class MemoService {
                     ()-> new IllegalArgumentException("사용자가 존재하지 않습니다.")
             );
 
-
             Memo newOne = new Memo(dto);                                        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
             memoRepository.save(newOne);                                        // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
             exportDto = new MemoResponseDto(newOne);                  // Entity -> Dto로 전환
@@ -70,20 +69,41 @@ public class MemoService {
     }
 
     @Transactional  // 트랜잭셔널은 DB의 값을 변화를 줄때 필요한데 다른 DB CRUD에는 이게 기본적으로 있는데 update만 없다고..
-    public MemoResponseDto modifyMemo (Long id, MemoRequestDto dto) {
+    public PublicDto modifyMemo (Long id, MemoRequestDto dto, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);               //write에서 동일
+        Claims claims;
+        PublicDto exportDto = new PublicDto();
 
-        //findById(id) :  id 기준으로 검색
-        //orElseTrow() : 검색시 에러 발생시 예외를 던진다
+        if(token != null) {
+            if (jwtUtil.validateToken(token)) {
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("Token Error");
+            }
+
+            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
+                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
+            );
+
+            //findById(id) :  id 기준으로 검색
+            //orElseTrow() : 검색시 에러 발생시 예외를 던진다
             // () ->  : optional 인자가 null경우
             //new IllegalArgumentException("메세지") : 부적절한 인수, 부정한 인수를 메서드에 건네준 예외 임을 메세지와 함께 알린다.
-        Memo updateOne = memoRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
-        );
-        MemoResponseDto exportDto = new MemoResponseDto(updateOne);
-//        if(updateOne.getPassword().equals(dto.getPassword())){              // DB에서 가져온 패스워드랑 클라이언트에서 들고온 패스워드를 비교
-//            updateOne.update(dto);                                          // update는 entity에 새로 정의한 함수
-//        }
-        return exportDto;
+            Memo updateOne = memoRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
+            );
+
+            if (updateOne.getUsername().equals(user.getUsername())) {
+                exportDto = new MemoResponseDto(updateOne);
+                exportDto.setResult(200,"글 수정 성공입니다.");
+                updateOne.update(dto);  // update는 entity에 새로 정의한 함수
+                return exportDto;
+            }
+            return null;
+        } else {
+            exportDto.setResult(0,"token이 없습니다.");
+            return exportDto;
+        }
     }
 
     public PublicDto deleteMemo (Long id, String pw) {

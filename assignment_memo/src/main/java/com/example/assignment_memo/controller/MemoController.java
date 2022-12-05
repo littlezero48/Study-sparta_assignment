@@ -35,8 +35,8 @@ public class MemoController {
     }
 
     @PutMapping("/api/memos/{id}") // PUT방식
-    public MemoResponseDto memoModify(@PathVariable Long id, @RequestBody MemoRequestDto dto) {
-        return memoService.modifyMemo(id, dto);
+    public PublicDto memoModify(@PathVariable Long id, @RequestBody MemoRequestDto dto, HttpServletRequest request) {
+        return memoService.modifyMemo(id, dto, request);
     }
 
     @DeleteMapping("/api/memos/{id}")  // DELETE방식
