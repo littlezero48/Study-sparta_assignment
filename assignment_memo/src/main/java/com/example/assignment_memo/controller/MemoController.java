@@ -40,9 +40,8 @@ public class MemoController {
     }
 
     @DeleteMapping("/api/memos/{id}")  // DELETE방식
-    public PublicDto memoDelete(@PathVariable Long id, @RequestBody MemoRequestDto dto) {
-//        return memoService.deleteMemo(id, dto.getPassword());
-        return null;
+    public PublicDto memoDelete(@PathVariable Long id, HttpServletRequest request) {
+        return memoService.deleteMemo(id, request);
     }
 }
 

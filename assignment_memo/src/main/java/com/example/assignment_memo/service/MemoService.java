@@ -94,9 +94,9 @@ public class MemoService {
             );
 
             if (updateOne.getUsername().equals(user.getUsername())) {
+                updateOne.update(dto);  // update는 entity에 새로 정의한 함수
                 exportDto = new MemoResponseDto(updateOne);
                 exportDto.setResult(200,"글 수정 성공입니다.");
-                updateOne.update(dto);  // update는 entity에 새로 정의한 함수
                 return exportDto;
             }
             return null;
@@ -106,17 +106,35 @@ public class MemoService {
         }
     }
 
-    public PublicDto deleteMemo (Long id, String pw) {
-        Memo updateOne = memoRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
-        );
+    public PublicDto deleteMemo (Long id, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);               //write에서 동일
+        Claims claims;
+        PublicDto exportDto = new PublicDto();
 
-        PublicDto result = new PublicDto();                                 // 메세지 처리를 위한 dto 객체 생성
-//        if (updateOne.getPassword().equals(pw)) {                           // 비밀번호 대조
-//            memoRepository.deleteById(id);                                  // delete자체에 Transactional을 생기게 하는 로직이 있다
-//            result.setResult(200,"글 삭제");
-//        }
-        return result;
+        if(token != null) {
+            if (jwtUtil.validateToken(token)) {
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("Token Error");
+            }
+
+            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
+                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
+            );
+
+            Memo updateOne = memoRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
+            );
+
+            if (updateOne.getUsername().equals(user.getUsername())) {                           // 비밀번호 대조
+                memoRepository.deleteById(id);                                  // delete자체에 Transactional을 생기게 하는 로직이 있다
+                exportDto.setResult(200,"글 삭제");
+            }
+            return exportDto;
+        } else {
+            exportDto.setResult(0,"token이 없습니다.");
+            return exportDto;
+        }
     }
 }
 
