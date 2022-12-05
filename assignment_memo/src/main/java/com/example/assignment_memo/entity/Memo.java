@@ -20,7 +20,7 @@ public class Memo extends Timestamped {
     private String title;
 
     @Column(nullable = false)
-    private String author;
+    private String username;
 
     @Column(nullable = false)
     private String content;
@@ -36,7 +36,7 @@ public class Memo extends Timestamped {
     public Memo(MemoRequestDto dto){                    // 생성자
 
         this.title = dto.getTitle();
-        this.author = dto.getAuthor();
+        this.username = dto.getUsername();
         this.content = dto.getContent();
         this.password = dto.getPassword();
 
@@ -45,7 +45,7 @@ public class Memo extends Timestamped {
     public void update(MemoRequestDto dto){             // 수정 메소드
 
         this.title = dto.getTitle();
-        this.author = dto.getAuthor();
+        this.username = dto.getUsername();
         this.content = dto.getContent();
     }
 
