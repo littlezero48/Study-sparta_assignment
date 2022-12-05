@@ -48,15 +48,7 @@ public class MemoService {
         PublicDto exportDto = new PublicDto();
 
         if(token != null){                                          //token없으면 글 생성 불가
-            if(jwtUtil.validateToken(token)){                       // token이 유효한 거면 생성 가능
-                claims = jwtUtil.getUserInfoFromToken(token);       // 토큰에서 사용자 정보 가져오기
-            } else {
-                throw new IllegalArgumentException("Token Error");
-            }
-
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    ()-> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-            );
+            validateUser(token);
 
             Memo newOne = new Memo(dto);                                        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
             memoRepository.save(newOne);                                        // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
@@ -75,15 +67,7 @@ public class MemoService {
         PublicDto exportDto = new PublicDto();
 
         if(token != null) {
-            if (jwtUtil.validateToken(token)) {
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else {
-                throw new IllegalArgumentException("Token Error");
-            }
-
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-            );
+            User user = validateUser(token);
 
             //findById(id) :  id 기준으로 검색
             //orElseTrow() : 검색시 에러 발생시 예외를 던진다
@@ -108,19 +92,10 @@ public class MemoService {
 
     public PublicDto deleteMemo (Long id, HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);               //write에서 동일
-        Claims claims;
         PublicDto exportDto = new PublicDto();
 
         if(token != null) {
-            if (jwtUtil.validateToken(token)) {
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else {
-                throw new IllegalArgumentException("Token Error");
-            }
-
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-            );
+            User user = validateUser(token);
 
             Memo updateOne = memoRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
@@ -135,6 +110,22 @@ public class MemoService {
             exportDto.setResult(0,"token이 없습니다.");
             return exportDto;
         }
+    }
+
+    public User validateUser(String token){
+        Claims claims;
+
+        if (jwtUtil.validateToken(token)) {                 // token이 유효한 거면 생성 가능
+            claims = jwtUtil.getUserInfoFromToken(token);   // 토큰에서 사용자 정보 가져오기
+        } else {
+            throw new IllegalArgumentException("Token Error");
+        }
+
+        User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
+                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
+        );
+
+        return user;
     }
 }
 
