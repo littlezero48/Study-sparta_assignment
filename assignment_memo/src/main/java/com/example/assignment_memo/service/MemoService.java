@@ -35,11 +35,11 @@ public class MemoService {
         return exportDtoList;
     }
 
-    public MemoResponseDto getMemos(Long id){                               // 해당 글 하나만 읽기
+    public MemoResponseDto getMemos(Long id){                       // 해당 글 하나만 읽기
         Memo getOne = memoRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
         );
-        return new MemoResponseDto(getOne);                                 // Entity -> Dto로 전환
+        return new MemoResponseDto(getOne);                         // Entity -> Dto로 전환
     }
 
     public PublicDto writeMemo(MemoRequestDto dto, HttpServletRequest request){
@@ -50,10 +50,10 @@ public class MemoService {
         if(token != null){                                          //token없으면 글 생성 불가
             User user = validateUser(token);
 
-            Memo newOne = new Memo(dto, user.getUsername());                                        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
-            memoRepository.save(newOne);                                        // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
-            exportDto = new MemoResponseDto(newOne);                  // Entity -> Dto로 전환
-            return exportDto;                                                   // 결과값을 다시 리턴
+            Memo newOne = new Memo(dto, user.getUsername());        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
+            memoRepository.save(newOne);                            // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
+            exportDto = new MemoResponseDto(newOne);                // Entity -> Dto로 전환
+            return exportDto;                                       // 결과값을 다시 리턴
         } else {
             exportDto.setResult(0, "Token이 없습니다" );
             return exportDto;
@@ -62,7 +62,7 @@ public class MemoService {
 
     @Transactional  // 트랜잭셔널은 DB의 값을 변화를 줄때 필요한데 다른 DB CRUD에는 이게 기본적으로 있는데 update만 없다고..
     public PublicDto modifyMemo (Long id, MemoRequestDto dto, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);               //write에서 동일
+        String token = jwtUtil.resolveToken(request);
         Claims claims;
         PublicDto exportDto = new PublicDto();
 
@@ -101,7 +101,7 @@ public class MemoService {
                 () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
             );
 
-            if (updateOne.getUsername().equals(user.getUsername())) {                           // 비밀번호 대조
+            if (updateOne.getUsername().equals(user.getUsername())) {           // 유저 대조
                 memoRepository.deleteById(id);                                  // delete자체에 Transactional을 생기게 하는 로직이 있다
                 exportDto.setResult(200,"글 삭제");
             }
@@ -112,6 +112,7 @@ public class MemoService {
         }
     }
 
+    // 유저 체크
     public User validateUser(String token){
         Claims claims;
 
