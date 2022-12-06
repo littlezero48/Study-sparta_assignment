@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Reply extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long replyUid;
+    private Long replyId;
 
 
     @ManyToOne

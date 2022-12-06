@@ -54,6 +54,17 @@ public class MemoController {
     public PublicDto createReply(@PathVariable Long id, @RequestBody ReplyRequestDto dto, HttpServletRequest request){
         return memoService.createReply(id, dto, request);
     }
+
+    @PutMapping("/api/memos/{id}/{replyId}")
+    public PublicDto modifyReply(@PathVariable Long id, @PathVariable Long replyId, @RequestBody ReplyRequestDto dto, HttpServletRequest request){
+        return memoService.modifyReply(id, replyId, dto, request);
+    }
+
+    @DeleteMapping("/api/memos/{id}/{replyId}")
+    public PublicDto DeleteReply(@PathVariable Long id, @PathVariable Long replyId, HttpServletRequest request){
+        return memoService.deleteReply(id, replyId, request);
+    }
+
 }
 
 // Request가 들어오는 타입 따라 밥는 방법 4가지

@@ -138,7 +138,9 @@ public class MemoService {
         }
     }
 
+
     // 글 삭제 기능
+    @Transactional
     public PublicDto deleteMemo (Long id, HttpServletRequest request) {
         Memo memo = memoRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
@@ -182,8 +184,9 @@ public class MemoService {
     }
 
     // 댓글 수정 기능
-    public PublicDto modifyReply(Long id, ReplyRequestDto dto, HttpServletRequest request) {
-        Reply reply = replyRepository.findByMemo_MemoIdAndReplyUid(id, dto.getReplyId()).orElseThrow(
+    @Transactional
+    public PublicDto modifyReply(Long id, Long replyId, ReplyRequestDto dto, HttpServletRequest request) {
+        Reply reply = replyRepository.findByMemo_MemoIdAndReplyId(id, replyId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
 
@@ -195,8 +198,30 @@ public class MemoService {
 
             if(reply.getReplyName().equals(user.getUsername())){
                 reply.update(dto);
-                replyRepository.save(reply);                                           // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
                 exportDto = new ReplyResponseDto(reply);                               // Entity -> Dto로 전환
+                return exportDto;
+            }
+        }
+        return null;
+    }
+
+    // 댓글 삭제 기능
+    @Transactional
+    public PublicDto deleteReply(Long id, Long replyId,  HttpServletRequest request) {
+        Reply reply = replyRepository.findByMemo_MemoIdAndReplyId(id, replyId).orElseThrow(
+                () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
+        );
+
+        String token = jwtUtil.resolveToken(request);
+        PublicDto exportDto;
+
+        if(token != null){
+            User user = validateUser(token);
+
+            if(reply.getReplyName().equals(user.getUsername())){
+                replyRepository.deleteByReplyId(replyId);                            // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
+                exportDto = new PublicDto();                               // Entity -> Dto로 전환
+                exportDto.setResult(200,"글 삭제");
                 return exportDto;
             }
         }
