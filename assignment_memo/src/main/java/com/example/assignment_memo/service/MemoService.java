@@ -5,6 +5,7 @@ import com.example.assignment_memo.dto.MemoResponseDto;
 import com.example.assignment_memo.dto.PublicDto;
 import com.example.assignment_memo.entity.Memo;
 import com.example.assignment_memo.entity.User;
+import com.example.assignment_memo.entity.UserRoleEnum;
 import com.example.assignment_memo.jwt.JwtUtil;
 import com.example.assignment_memo.repository.MemoRepository;
 import com.example.assignment_memo.repository.UserRepository;
@@ -77,7 +78,8 @@ public class MemoService {
                     () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
             );
 
-            if (updateOne.getUsername().equals(user.getUsername())) {
+
+            if (updateOne.getUsername().equals(user.getUsername()) || user.getRole() == UserRoleEnum.ADMIN) {
                 updateOne.update(dto);  // update는 entity에 새로 정의한 함수
                 exportDto = new MemoResponseDto(updateOne);
                 exportDto.setResult(200,"글 수정 성공입니다.");
@@ -101,7 +103,7 @@ public class MemoService {
                 () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
             );
 
-            if (updateOne.getUsername().equals(user.getUsername())) {           // 유저 대조
+            if (updateOne.getUsername().equals(user.getUsername()) || user.getRole() == UserRoleEnum.ADMIN) {           // 유저 대조
                 memoRepository.deleteById(id);                                  // delete자체에 Transactional을 생기게 하는 로직이 있다
                 exportDto.setResult(200,"글 삭제");
             }

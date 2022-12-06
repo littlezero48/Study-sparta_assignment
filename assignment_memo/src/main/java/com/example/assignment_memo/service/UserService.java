@@ -24,7 +24,7 @@ public class UserService {
     public PublicDto signup(SignupRequestDto dto){
         String username = dto.getUsername();
         String password = dto.getPassword();
-        UserRoleEnum role = ADMIN_TOKEN.equals(dto.getAdminCode()) ? UserRoleEnum.ADMIN : UserRoleEnum.USER ;
+        UserRoleEnum role = ADMIN_TOKEN.equals(dto.getAdminToken()) ? UserRoleEnum.ADMIN : UserRoleEnum.USER ;
         PublicDto exportDto = new PublicDto();
 
         Optional<User> existUser = userRepository.findByUsername(username);
