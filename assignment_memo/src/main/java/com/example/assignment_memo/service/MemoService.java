@@ -1,13 +1,13 @@
 package com.example.assignment_memo.service;
 
-import com.example.assignment_memo.dto.MemoRequestDto;
-import com.example.assignment_memo.dto.MemoResponseDto;
-import com.example.assignment_memo.dto.PublicDto;
+import com.example.assignment_memo.dto.*;
 import com.example.assignment_memo.entity.Memo;
+import com.example.assignment_memo.entity.Reply;
 import com.example.assignment_memo.entity.User;
 import com.example.assignment_memo.entity.UserRoleEnum;
 import com.example.assignment_memo.jwt.JwtUtil;
 import com.example.assignment_memo.repository.MemoRepository;
+import com.example.assignment_memo.repository.ReplyRepository;
 import com.example.assignment_memo.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,7 @@ public class MemoService {
     private final MemoRepository memoRepository;                                // 메모 레포지토리를 사용할 수 있게 객체 선언 // 서비스든 컨트롤이든 클래스 연결할때 final 선언안해주면 오류남
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
+    private final ReplyRepository replyRepository;
 
     public List<MemoResponseDto> getMemos(){
         List<Memo> memolist = memoRepository.findAllByOrderByModifiedAtDesc(); // 아 여기서 데이터 값을 가져오는 메소드를 커스텀 하려면 리포지토리에서 작성해야 한다.
@@ -112,6 +113,27 @@ public class MemoService {
             exportDto.setResult(0,"token이 없습니다.");
             return exportDto;
         }
+    }
+
+    // 댓글 기능
+
+    public PublicDto createReply(Long id, ReplyRequestDto dto, HttpServletRequest request) {
+        String token = jwtUtil.resolveToken(request);
+        PublicDto exportDto = new PublicDto();
+
+        if(token != null){
+            User user = validateUser(token);
+
+            Memo updateOne = memoRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
+            );
+
+            Reply newOne = new Reply (dto, user.getUsername(), updateOne);          // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
+            replyRepository.save(newOne);                                           // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
+            exportDto = new ReplyResponseDto(newOne);                               // Entity -> Dto로 전환
+            return exportDto;
+        }
+        return null;
     }
 
     // 유저 체크

@@ -14,8 +14,9 @@ import java.util.List;
 public class Memo extends Timestamped {
 
     @Id     // ID임을 선언
-    @GeneratedValue(strategy = GenerationType.IDENTITY)     // 값 자동 생성 , 생성 전략 : 자동 증감
-    private Long id;                                    // int값이 면 안되나?? 왜 repository에서 타입에 안되지
+    @Column(name = "MEMO_ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)     // 값 자동 생성 , 생성 전략 : 자동 증감
+    private Long memoId;                                    // int값이 면 안되나?? 왜 repository에서 타입에 안되지
 
     @Column(nullable = false)                           // 컬럼 설정 , null값 허용 선택 : 불가
     private String title;
@@ -26,7 +27,7 @@ public class Memo extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "memo_uid", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "memo")
     @OrderBy("modifiedAt desc ")    // 엔티티단에서 정렬
     private List<Reply> replies = new ArrayList<>(); // 일대다의 다 부분을 List로 받기
 

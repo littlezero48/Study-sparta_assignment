@@ -3,6 +3,7 @@ package com.example.assignment_memo.controller;
 import com.example.assignment_memo.dto.MemoRequestDto;
 import com.example.assignment_memo.dto.MemoResponseDto;
 import com.example.assignment_memo.dto.PublicDto;
+import com.example.assignment_memo.dto.ReplyRequestDto;
 import com.example.assignment_memo.service.MemoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,29 +20,39 @@ public class MemoController {
 //    @GetMapping("/")
 //    public ModelAndView home(){ return new ModelAndView("index"); }               // 클래스 자체가 Model과 View를 같이 하는 클래스구나
 
+    // 글 기능
+
     @GetMapping("/api/memos") // GET방식
-    public List<MemoResponseDto> memoRequest (){                                    // @RequestBody 어노테이션으로 body의 내용을 가져옴
+    public List<MemoResponseDto> getMemos (){                                    // @RequestBody 어노테이션으로 body의 내용을 가져옴
         return memoService.getMemos();
     }
 
     @GetMapping("/api/memos/{id}") // GET방식                                    // 해당 글 하나만 읽기
-    public MemoResponseDto memoRequest (@PathVariable Long id){
+    public MemoResponseDto getMemo (@PathVariable Long id){
         return memoService.getMemos(id);
     }
 
     @PostMapping("/api/memos")  //POST방식
-    public PublicDto memoWrite (@RequestBody MemoRequestDto dto, HttpServletRequest request) {
+    public PublicDto createMemo (@RequestBody MemoRequestDto dto, HttpServletRequest request) {
         return memoService.writeMemo(dto, request);
     }
 
     @PutMapping("/api/memos/{id}") // PUT방식
-    public PublicDto memoModify(@PathVariable Long id, @RequestBody MemoRequestDto dto, HttpServletRequest request) {
+    public PublicDto modifyMemo(@PathVariable Long id, @RequestBody MemoRequestDto dto, HttpServletRequest request) {
         return memoService.modifyMemo(id, dto, request);
     }
 
     @DeleteMapping("/api/memos/{id}")  // DELETE방식
-    public PublicDto memoDelete(@PathVariable Long id, HttpServletRequest request) {
+    public PublicDto deleteMemo(@PathVariable Long id, HttpServletRequest request) {
         return memoService.deleteMemo(id, request);
+    }
+
+
+    // 댓글 기능
+
+    @PostMapping("/api/memos/{id}")
+    public PublicDto createReply(@PathVariable Long id, @RequestBody ReplyRequestDto dto, HttpServletRequest request){
+        return memoService.createReply(id, dto, request);
     }
 }
 

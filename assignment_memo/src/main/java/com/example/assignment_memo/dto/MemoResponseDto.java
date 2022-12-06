@@ -16,7 +16,7 @@ public class MemoResponseDto extends PublicDto {
     private LocalDateTime modifiedAt;
 
     public MemoResponseDto(Memo memo) {
-        this.id = memo.getId();
+        this.id = memo.getMemoId();
         this.title = memo.getTitle();
         this.username = memo.getUsername();
         this.content = memo.getContent();
