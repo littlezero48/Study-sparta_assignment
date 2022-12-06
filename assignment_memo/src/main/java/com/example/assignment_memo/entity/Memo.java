@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter // Class 모든 필드의 Getter method를 생성
 @Entity // Entity임을 선언
@@ -12,7 +14,7 @@ import javax.persistence.*;
 public class Memo extends Timestamped {
 
     @Id     // ID임을 선언
-    @GeneratedValue(strategy = GenerationType.AUTO)     // 값 자동 생성 , 생성 전략 : 자동 증감
+    @GeneratedValue(strategy = GenerationType.IDENTITY)     // 값 자동 생성 , 생성 전략 : 자동 증감
     private Long id;                                    // int값이 면 안되나?? 왜 repository에서 타입에 안되지
 
     @Column(nullable = false)                           // 컬럼 설정 , null값 허용 선택 : 불가
@@ -23,6 +25,10 @@ public class Memo extends Timestamped {
 
     @Column(nullable = false)
     private String content;
+
+    @OneToMany(mappedBy = "memo_uid", fetch = FetchType.EAGER)
+    @OrderBy("modifiedAt desc ")    // 엔티티단에서 정렬
+    private List<Reply> replies = new ArrayList<>(); // 일대다의 다 부분을 List로 받기
 
 //    @JsonIgnore                                         // 이 어노테이션을 쓰면 화면으로 가는 DTO에 노출되지 않는다.
 //    @Column(nullable = false)
