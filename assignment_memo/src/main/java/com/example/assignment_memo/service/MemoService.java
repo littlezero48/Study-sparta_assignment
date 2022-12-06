@@ -163,20 +163,42 @@ public class MemoService {
 
     // 댓글 작성 기능
     public PublicDto createReply(Long id, ReplyRequestDto dto, HttpServletRequest request) {
+        Memo memo = memoRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
+        );
+
         String token = jwtUtil.resolveToken(request);
-        PublicDto exportDto = new PublicDto();
+        PublicDto exportDto;
 
         if(token != null){
             User user = validateUser(token);
 
-            Memo updateOne = memoRepository.findById(id).orElseThrow(
-                    () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
-            );
-
-            Reply newOne = new Reply (dto, user.getUsername(), updateOne);          // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
+            Reply newOne = new Reply (dto, user.getUsername(), memo);          // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
             replyRepository.save(newOne);                                           // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
             exportDto = new ReplyResponseDto(newOne);                               // Entity -> Dto로 전환
             return exportDto;
+        }
+        return null;
+    }
+
+    // 댓글 수정 기능
+    public PublicDto modifyReply(Long id, ReplyRequestDto dto, HttpServletRequest request) {
+        Reply reply = replyRepository.findByMemo_MemoIdAndReplyUid(id, dto.getReplyId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
+        );
+
+        String token = jwtUtil.resolveToken(request);
+        PublicDto exportDto;
+
+        if(token != null){
+            User user = validateUser(token);
+
+            if(reply.getReplyName().equals(user.getUsername())){
+                reply.update(dto);
+                replyRepository.save(reply);                                           // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
+                exportDto = new ReplyResponseDto(reply);                               // Entity -> Dto로 전환
+                return exportDto;
+            }
         }
         return null;
     }

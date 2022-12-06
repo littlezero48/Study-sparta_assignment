@@ -4,5 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class ReplyRequestDto {
-    private String reply_content;
+    private Long replyId;
+    private String replyContent;
 }

@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Reply extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long reply_uid;
+    private Long replyUid;
 
 
     @ManyToOne
@@ -21,14 +21,18 @@ public class Reply extends Timestamped{
     private Memo memo; //객체로 연결해야해 필드 하나가 아니라
 
     @Column(nullable = false)
-    private String reply_name;
+    private String replyName;
 
     @Column(nullable = false)
-    private String reply_content;
+    private String replyContent;
 
     public Reply(ReplyRequestDto dto, String username, Memo memo){
         this.memo = memo;
-        this.reply_name = username;
-        this.reply_content = dto.getReply_content();
+        this.replyName = username;
+        this.replyContent = dto.getReplyContent();
+    }
+
+    public void update(ReplyRequestDto dto){
+        this.replyContent = dto.getReplyContent();
     }
 }

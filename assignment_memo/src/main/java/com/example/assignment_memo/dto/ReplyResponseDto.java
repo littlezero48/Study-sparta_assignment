@@ -6,15 +6,15 @@ import lombok.Getter;
 @Getter
 public class ReplyResponseDto extends PublicDto {
 
-    private Long reply_id;
-    private Long memo_uid;
-    private String reply_name;
-    private String reply_content;
+    private Long replyId;
+    private Long memoId;
+    private String replyName;
+    private String replyContent;
 
     public ReplyResponseDto(Reply reply) {
-        this.reply_id = reply.getReply_uid();
-        this.memo_uid = reply.getMemo().getMemoId();
-        this.reply_name = reply.getReply_name();
-        this.reply_content = reply.getReply_content();
+        this.replyId = reply.getReplyUid();
+        this.memoId = reply.getMemo().getMemoId();
+        this.replyName = reply.getReplyName();
+        this.replyContent = reply.getReplyContent();
     }
 }
