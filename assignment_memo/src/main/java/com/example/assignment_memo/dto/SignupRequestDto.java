@@ -16,5 +16,6 @@ public class SignupRequestDto {
     @Pattern(regexp="^[a-zA-Z0-9!@#$%^&+=]*$", message = "알파벳 소문자 a-z 숫자 0-9 특수문자 가능")
     private String password;
 
+    private String adminCode;
 
 }

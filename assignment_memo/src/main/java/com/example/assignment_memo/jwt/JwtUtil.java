@@ -1,5 +1,6 @@
 package com.example.assignment_memo.jwt;
 
+import com.example.assignment_memo.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
@@ -39,7 +40,7 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String createToken(String username, String role){
+    public String createToken(String username, UserRoleEnum role){
         Date date = new Date();
 
         // 토큰 Builder반환

@@ -20,9 +20,10 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String role;
+    @Enumerated(value = EnumType.STRING) // Enum을 사용하며 어떤 방식으로 사용할지 설정 // 해당 문자열 그대로 사용
+    private UserRoleEnum role;
 
-    public User(String username, String password, String role){
+    public User(String username, String password, UserRoleEnum role){
         this.username = username;
         this.password = password;
         this.role = role;
