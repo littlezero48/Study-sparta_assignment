@@ -91,7 +91,7 @@ public class MemoService {
     }
 
     public PublicDto deleteMemo (Long id, HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);               //write에서 동일
+        String token = jwtUtil.resolveToken(request);
         PublicDto exportDto = new PublicDto();
 
         if(token != null) {
