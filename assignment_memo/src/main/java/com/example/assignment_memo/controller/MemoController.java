@@ -1,15 +1,13 @@
 package com.example.assignment_memo.controller;
 
 import com.example.assignment_memo.dto.MemoRequestDto;
-import com.example.assignment_memo.dto.MemoResponseDto;
-import com.example.assignment_memo.dto.PublicDto;
+import com.example.assignment_memo.dto.MessageDto;
 import com.example.assignment_memo.dto.ReplyRequestDto;
 import com.example.assignment_memo.service.MemoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController             // 컨트롤러 선언
 @RequiredArgsConstructor    // final 변수, Notnull 표시가 된 변수처럼 필수적인 정보를 세팅하는 생성자를 만든다.
@@ -23,27 +21,27 @@ public class MemoController {
     // 글 기능
 
     @GetMapping("/api/memos") // GET방식
-    public List<MemoResponseDto> getMemos (){                                    // @RequestBody 어노테이션으로 body의 내용을 가져옴
+    public MessageDto getMemos (){                                    // @RequestBody 어노테이션으로 body의 내용을 가져옴
         return memoService.getMemos();
     }
 
     @GetMapping("/api/memos/{id}") // GET방식                                    // 해당 글 하나만 읽기
-    public MemoResponseDto getMemo (@PathVariable Long id){
+    public MessageDto getMemo (@PathVariable Long id){
         return memoService.getMemos(id);
     }
 
     @PostMapping("/api/memos")  //POST방식
-    public PublicDto createMemo (@RequestBody MemoRequestDto dto, HttpServletRequest request) {
+    public MessageDto createMemo (@RequestBody MemoRequestDto dto, HttpServletRequest request) {
         return memoService.writeMemo(dto, request);
     }
 
     @PutMapping("/api/memos/{id}") // PUT방식
-    public PublicDto modifyMemo(@PathVariable Long id, @RequestBody MemoRequestDto dto, HttpServletRequest request) {
+    public MessageDto modifyMemo(@PathVariable Long id, @RequestBody MemoRequestDto dto, HttpServletRequest request) {
         return memoService.modifyMemo(id, dto, request);
     }
 
     @DeleteMapping("/api/memos/{id}")  // DELETE방식
-    public PublicDto deleteMemo(@PathVariable Long id, HttpServletRequest request) {
+    public MessageDto deleteMemo(@PathVariable Long id, HttpServletRequest request) {
         return memoService.deleteMemo(id, request);
     }
 
@@ -51,17 +49,17 @@ public class MemoController {
     // 댓글 기능
 
     @PostMapping("/api/memos/{id}")
-    public PublicDto createReply(@PathVariable Long id, @RequestBody ReplyRequestDto dto, HttpServletRequest request){
+    public MessageDto createReply(@PathVariable Long id, @RequestBody ReplyRequestDto dto, HttpServletRequest request){
         return memoService.createReply(id, dto, request);
     }
 
     @PutMapping("/api/memos/{id}/{replyId}")
-    public PublicDto modifyReply(@PathVariable Long id, @PathVariable Long replyId, @RequestBody ReplyRequestDto dto, HttpServletRequest request){
+    public MessageDto modifyReply(@PathVariable Long id, @PathVariable Long replyId, @RequestBody ReplyRequestDto dto, HttpServletRequest request){
         return memoService.modifyReply(id, replyId, dto, request);
     }
 
     @DeleteMapping("/api/memos/{id}/{replyId}")
-    public PublicDto DeleteReply(@PathVariable Long id, @PathVariable Long replyId, HttpServletRequest request){
+    public MessageDto DeleteReply(@PathVariable Long id, @PathVariable Long replyId, HttpServletRequest request){
         return memoService.deleteReply(id, replyId, request);
     }
 

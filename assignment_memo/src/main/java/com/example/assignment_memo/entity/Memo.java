@@ -27,7 +27,7 @@ public class Memo extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "memo")
+    @OneToMany(mappedBy = "memo", cascade = CascadeType.REMOVE)
     @OrderBy("createdAt desc ")    // 엔티티단에서 정렬
     private List<Reply> replies = new ArrayList<>(); // 일대다의 다 부분을 List로 받기
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class MemoResponseDto extends PublicDto {
+public class MemoResponseDto {
 
     private Long id;
     private String title;

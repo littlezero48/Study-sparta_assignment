@@ -1,7 +1,7 @@
 package com.example.assignment_memo.controller;
 
 import com.example.assignment_memo.dto.LoginRequestDto;
-import com.example.assignment_memo.dto.PublicDto;
+import com.example.assignment_memo.dto.MessageDto;
 import com.example.assignment_memo.dto.SignupRequestDto;
 import com.example.assignment_memo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +21,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public PublicDto signup(@RequestBody @Valid SignupRequestDto dto){
+    public MessageDto signup(@RequestBody @Valid SignupRequestDto dto){
         return userService.signup(dto);
     }
 
     @PostMapping("/login")
-    public PublicDto login(@RequestBody LoginRequestDto dto, HttpServletResponse response){
+    public MessageDto login(@RequestBody LoginRequestDto dto, HttpServletResponse response){
         return userService.login(dto, response);
     }
 }

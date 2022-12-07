@@ -4,7 +4,7 @@ import com.example.assignment_memo.entity.Reply;
 import lombok.Getter;
 
 @Getter
-public class ReplyResponseDto extends PublicDto {
+public class ReplyResponseDto {
 
     private Long replyId;
     private Long memoId;
