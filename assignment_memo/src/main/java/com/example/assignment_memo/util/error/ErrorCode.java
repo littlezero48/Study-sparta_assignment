@@ -27,7 +27,7 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다"),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "로그아웃 된 사용자입니다"),
     NOT_FOLLOW(HttpStatus.NOT_FOUND, "팔로우 중이지 않습니다"),
-    MEMO_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 글이 존재하지 안습니다."),
+    MEMO_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 글이 존재하지 않습니다."),
 
     //409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재
     DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "데이터가 이미 존재합니다"),
