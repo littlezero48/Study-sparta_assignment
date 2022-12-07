@@ -15,6 +15,6 @@
 
 * (22/12/08)   `assignment_memo + 추가기능` </br></br>
 기존 메모기능의 프로젝트에 JWT기능과 댓글기능, 권한기능, 예외처리 기능을 추가하는 과제. </br>
-전역을 대상으로 예외를 처리하는 기술과 builder패턴을 직접 구현등을 추가했습니다.
+전역을 대상으로 예외를 처리하는 기술과 builder패턴을 직접 구현등을 추가했습니다. </br>
 [API 명세서](https://documenter.getpostman.com/view/24654654/2s8YzMX4uu)
 
