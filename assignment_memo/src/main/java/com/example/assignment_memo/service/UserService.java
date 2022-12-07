@@ -27,9 +27,8 @@ public class UserService {
         String password = dto.getPassword();
         UserRoleEnum role = ADMIN_TOKEN.equals(dto.getAdminToken()) ? UserRoleEnum.ADMIN : UserRoleEnum.USER ;
 
-        Optional<User> existUser = userRepository.findByUsername(username);
-        if(existUser.isPresent()){
-//            throw new IllegalArgumentException("중복된 사용자가 존재합니다");
+        User existUser = userRepository.findByUsername(username);
+        if(existUser != null){
             return new MessageDto(StatusEnum.EXIST_USER);
         }
 
@@ -42,10 +41,6 @@ public class UserService {
     public MessageDto login(LoginRequestDto dto, HttpServletResponse response){
         String username = dto.getUsername();
         String password = dto.getPassword();
-
-//        User user = userRepository.findByUsernameAndPassword(username, password).orElseThrow(
-//                ()-> new IllegalArgumentException("사용자가 없습니다.")
-//        );
 
         Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
         if (user.isEmpty()) {

@@ -18,25 +18,7 @@ public class MemoResponseDto {
 
     private List<ReplyResponseDto> replies = new ArrayList<>();
 
-//    public MemoResponseDto(Memo memo) {
-//        this.id = memo.getMemoId();
-//        this.title = memo.getTitle();
-//        this.username = memo.getUsername();
-//        this.content = memo.getContent();
-//        this.createdAt = memo.getCreatedAt();
-//        this.modifiedAt = memo.getModifiedAt();
-//    }
-//
-//    public MemoResponseDto(Memo memo, List<ReplyResponseDto> replies) {
-//        this.id = memo.getMemoId();
-//        this.title = memo.getTitle();
-//        this.username = memo.getUsername();
-//        this.content = memo.getContent();
-//        this.createdAt = memo.getCreatedAt();
-//        this.modifiedAt = memo.getModifiedAt();
-//        this.replies = replies;
-//    }
-
+        // Builder 구현해서 사용
         public MemoResponseDto(Long id, String title, String username, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, List<ReplyResponseDto> replies) {
         this.id = id;
         this.title = title;

@@ -16,7 +16,7 @@ public class Memo extends Timestamped {
     @Id     // ID임을 선언
     @Column(name = "MEMO_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)     // 값 자동 생성 , 생성 전략 : 자동 증감
-    private Long memoId;                                    // int값이 면 안되나?? 왜 repository에서 타입에 안되지
+    private Long memoId;                                // int값이 면 안되나?? 왜 repository에서 타입에 안되지
 
     @Column(nullable = false)                           // 컬럼 설정 , null값 허용 선택 : 불가
     private String title;
@@ -27,9 +27,9 @@ public class Memo extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "memo", cascade = CascadeType.REMOVE)
-    @OrderBy("createdAt desc ")    // 엔티티단에서 정렬
-    private List<Reply> replies = new ArrayList<>(); // 일대다의 다 부분을 List로 받기
+    @OneToMany(mappedBy = "memo", cascade = CascadeType.REMOVE) // 글 하나가 삭제되면 맵핑되어있는 쪽 글도 삭제되는 cascade 연속성 전이 속성
+    @OrderBy("createdAt desc ")                         // 엔티티단에서 정렬
+    private List<Reply> replies = new ArrayList<>();    // 일대다의 다 부분을 List로 받기
 
 //    @JsonIgnore                                         // 이 어노테이션을 쓰면 화면으로 가는 DTO에 노출되지 않는다.
 //    @Column(nullable = false)

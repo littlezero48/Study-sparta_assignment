@@ -5,6 +5,8 @@ import com.example.assignment_memo.dto.MessageDto;
 import com.example.assignment_memo.dto.ReplyRequestDto;
 import com.example.assignment_memo.service.MemoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,49 +20,63 @@ public class MemoController {
 //    @GetMapping("/")
 //    public ModelAndView home(){ return new ModelAndView("index"); }               // 클래스 자체가 Model과 View를 같이 하는 클래스구나
 
-    // 글 기능
-
+    // ----------------- 글 기능
+    // 전체글 조회
     @GetMapping("/api/memos") // GET방식
-    public MessageDto getMemos (){                                    // @RequestBody 어노테이션으로 body의 내용을 가져옴
-        return memoService.getMemos();
+    public ResponseEntity<MessageDto> getMemos (){                                  // @RequestBody 어노테이션으로 body의 내용을 가져옴
+        MessageDto messageDto = memoService.getMemos();
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
+    // 선택글 조회
     @GetMapping("/api/memos/{id}") // GET방식                                    // 해당 글 하나만 읽기
-    public MessageDto getMemo (@PathVariable Long id){
-        return memoService.getMemos(id);
+    public ResponseEntity<MessageDto> getMemo (@PathVariable Long id){
+        MessageDto messageDto = memoService.getMemos(id);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
+    // 글 작성
     @PostMapping("/api/memos")  //POST방식
-    public MessageDto createMemo (@RequestBody MemoRequestDto dto, HttpServletRequest request) {
-        return memoService.writeMemo(dto, request);
+    public ResponseEntity<MessageDto> createMemo (@RequestBody MemoRequestDto dto, HttpServletRequest request) {
+        MessageDto messageDto = memoService.createMemo(dto, request);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
+    // 글 수정
     @PutMapping("/api/memos/{id}") // PUT방식
-    public MessageDto modifyMemo(@PathVariable Long id, @RequestBody MemoRequestDto dto, HttpServletRequest request) {
-        return memoService.modifyMemo(id, dto, request);
+    public ResponseEntity<MessageDto> modifyMemo(@PathVariable Long id, @RequestBody MemoRequestDto dto, HttpServletRequest request) {
+        MessageDto messageDto = memoService.modifyMemo(id, dto, request);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
+    // 글 삭제
     @DeleteMapping("/api/memos/{id}")  // DELETE방식
-    public MessageDto deleteMemo(@PathVariable Long id, HttpServletRequest request) {
-        return memoService.deleteMemo(id, request);
+    public ResponseEntity<MessageDto> deleteMemo(@PathVariable Long id, HttpServletRequest request) {
+        MessageDto messageDto = memoService.deleteMemo(id, request);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
 
-    // 댓글 기능
-
+    // ---------------댓글 기능
+    // 댓글 작성
     @PostMapping("/api/memos/{id}")
-    public MessageDto createReply(@PathVariable Long id, @RequestBody ReplyRequestDto dto, HttpServletRequest request){
-        return memoService.createReply(id, dto, request);
+    public ResponseEntity<MessageDto> createReply(@PathVariable Long id, @RequestBody ReplyRequestDto dto, HttpServletRequest request){
+        MessageDto messageDto = memoService.createReply(id, dto, request);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
+    // 댓글 수정
     @PutMapping("/api/memos/{id}/{replyId}")
-    public MessageDto modifyReply(@PathVariable Long id, @PathVariable Long replyId, @RequestBody ReplyRequestDto dto, HttpServletRequest request){
-        return memoService.modifyReply(id, replyId, dto, request);
+    public ResponseEntity<MessageDto> modifyReply(@PathVariable Long id, @PathVariable Long replyId, @RequestBody ReplyRequestDto dto, HttpServletRequest request){
+        MessageDto messageDto = memoService.modifyReply(id, replyId, dto, request);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
+    // 댓글 삭제
     @DeleteMapping("/api/memos/{id}/{replyId}")
-    public MessageDto DeleteReply(@PathVariable Long id, @PathVariable Long replyId, HttpServletRequest request){
-        return memoService.deleteReply(id, replyId, request);
+    public ResponseEntity<MessageDto> DeleteReply(@PathVariable Long id, @PathVariable Long replyId, HttpServletRequest request){
+        MessageDto messageDto = memoService.deleteReply(id, replyId, request);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
 }

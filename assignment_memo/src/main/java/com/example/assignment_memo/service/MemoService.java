@@ -22,10 +22,11 @@ import java.util.List;
 @RequiredArgsConstructor        // 생성자 자동 주입
 public class MemoService {
 
-    private final MemoRepository memoRepository;                                // 메모 레포지토리를 사용할 수 있게 객체 선언 // 서비스든 컨트롤이든 클래스 연결할때 final 선언안해주면 오류남
-    private final JwtUtil jwtUtil;
+    private final MemoRepository memoRepository;        // 메모 레포지토리를 사용할 수 있게 객체 선언 // 서비스든 컨트롤이든 클래스 연결할때 final 선언안해주면 오류남
     private final UserRepository userRepository;
     private final ReplyRepository replyRepository;
+    private final JwtUtil jwtUtil;
+
 
     // 전체 글 조회
     public MessageDto getMemos(){
@@ -51,7 +52,7 @@ public class MemoService {
     }
 
     // 선택 글 조회 기능
-    public MessageDto getMemos(Long id){                       // 해당 글 하나만 읽기
+    public MessageDto getMemos(Long id){                            // 해당 글 하나만 읽기
         Memo memo = memoRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 글이 존재하지 않습니다.")
         );
@@ -64,19 +65,25 @@ public class MemoService {
                         .content(memo.getContent())
                         .createdAt(memo.getCreatedAt())
                         .modifiedAt(memo.getModifiedAt())
-                        .addReply(memo.getReplies())            // Entity -> Dto로 전환
+                        .addReply(memo.getReplies())                // Entity -> Dto로 전환
                         .getMemos();
 
-        return new MessageDto(StatusEnum.OK, responseDto);                          // Entity -> Dto로 전환
+        return new MessageDto(StatusEnum.OK, responseDto);          // Entity -> Dto로 전환
     }
 
     // 글 작성 기능
-    public MessageDto writeMemo(MemoRequestDto dto, HttpServletRequest request){
+    public MessageDto createMemo(MemoRequestDto dto, HttpServletRequest request){
         String token = jwtUtil.resolveToken(request);               // Request에서 Token 가져오기
         Claims claims;                                              // 사용자 정보 Claims을 가져올 변수
 
         if(token != null){                                          //token없으면 글 생성 불가
-            User user = validateUser(token);
+            MessageDto validateUser = validateUser(token);
+            User user = null;
+            if(validateUser instanceof UserDto){
+                user = ((UserDto) validateUser).getUser();
+            } else {
+                return validateUser;
+            }
 
             Memo memo = new Memo(dto, user.getUsername());        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
             memoRepository.save(memo);                            // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
@@ -112,16 +119,25 @@ public class MemoService {
         Claims claims;
 
         if(token != null) {
-            User user = validateUser(token);
+            MessageDto validateUser = validateUser(token);
+            User user = null;
+            if(validateUser instanceof UserDto){
+                user = ((UserDto) validateUser).getUser();
+            } else {
+                return validateUser;
+            }
 
             if(accessPermission(memo.getUsername(), user.getUsername(), user.getRole())) {
+
                 memo.update(dto);  // update는 entity에 새로 정의한 함수
 
                 MemoResponseDtoBuilder mrdBuilder = new MemoResponseDtoBuilder();
                 MemoResponseDto responseDto =
                         mrdBuilder.id(memo.getMemoId())
                                 .title(memo.getTitle())
+                                .username(memo.getUsername())
                                 .content(memo.getContent())
+                                .createdAt(memo.getCreatedAt())
                                 .modifiedAt(memo.getModifiedAt())
                                 .addReply(memo.getReplies())
                                 .getMemos();
@@ -145,10 +161,16 @@ public class MemoService {
         String token = jwtUtil.resolveToken(request);
 
         if(token != null) {
-            User user = validateUser(token);
+            MessageDto validateUser = validateUser(token);
+            User user = null;
+            if(validateUser instanceof UserDto){
+                user = ((UserDto) validateUser).getUser();
+            } else {
+                return validateUser;
+            }
 
-            if(accessPermission(memo.getUsername(), user.getUsername(), user.getRole())) {           // 유저 대조
-                memoRepository.deleteById(id);                                  // delete자체에 Transactional을 생기게 하는 로직이 있다
+            if(accessPermission(memo.getUsername(), user.getUsername(), user.getRole())) {  // 유저 대조
+                memoRepository.deleteById(id);                                              // delete자체에 Transactional을 생기게 하는 로직이 있다
                 return new MessageDto(StatusEnum.OK);
             }
             return new MessageDto(StatusEnum.NO_ACCESS);
@@ -165,11 +187,17 @@ public class MemoService {
         String token = jwtUtil.resolveToken(request);
 
         if(token != null){
-            User user = validateUser(token);
+            MessageDto validateUser = validateUser(token);
+            User user = null;
+            if(validateUser instanceof UserDto){
+                user = ((UserDto) validateUser).getUser();
+            } else {
+                return validateUser;
+            }
 
-            Reply newOne = new Reply (dto, user.getUsername(), memo);          // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
+            Reply newOne = new Reply (dto, user.getUsername(), memo);               // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
             replyRepository.save(newOne);                                           // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
-            ReplyResponseDto responseDto = new ReplyResponseDto(newOne);                               // Entity -> Dto로 전환
+            ReplyResponseDto responseDto = new ReplyResponseDto(newOne);            // Entity -> Dto로 전환
             return new MessageDto(StatusEnum.OK, responseDto);
         }
         return new MessageDto(StatusEnum.BAD_REQUEST_TOKEN);
@@ -184,11 +212,17 @@ public class MemoService {
         String token = jwtUtil.resolveToken(request);
 
         if(token != null){
-            User user = validateUser(token);
+            MessageDto validateUser = validateUser(token);
+            User user = null;
+            if(validateUser instanceof UserDto){
+                user = ((UserDto) validateUser).getUser();
+            } else {
+                return validateUser;
+            }
 
             if(accessPermission(reply.getReplyName(), user.getUsername(), user.getRole())) {
                 reply.update(dto);
-                ReplyResponseDto responseDto = new ReplyResponseDto(reply);                               // Entity -> Dto로 전환
+                ReplyResponseDto responseDto = new ReplyResponseDto(reply);                     // Entity -> Dto로 전환
                 return new MessageDto(StatusEnum.OK, responseDto);
             }
             return new MessageDto(StatusEnum.NO_ACCESS);
@@ -198,40 +232,49 @@ public class MemoService {
 
     // 댓글 삭제 기능
     @Transactional
-    public MessageDto deleteReply(Long id, Long replyId, HttpServletRequest request) {
+    public MessageDto deleteReply(Long id, Long replyId, HttpServletRequest request) {      // 부모클래스인 MessageDto로 리턴타입을 정하고 UserDto도 사용해 다형성 사용
         Reply reply = replyRepository.findByMemo_MemoIdAndReplyId(id, replyId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
 
         String token = jwtUtil.resolveToken(request);
-        MessageDto exportDto;
 
-        if(token != null){
-            User user = validateUser(token);
+        if(token != null) {
+            MessageDto validateUser = validateUser(token);
+            User user = null;
+            if(validateUser instanceof UserDto){
+                user = ((UserDto) validateUser).getUser();
+            } else {
+                return validateUser;
+            }
 
-            if(accessPermission(reply.getReplyName(), user.getUsername(), user.getRole())) {
+            if (accessPermission(reply.getReplyName(), user.getUsername(), user.getRole())) {
                 replyRepository.deleteByReplyId(replyId);                            // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
                 return new MessageDto(StatusEnum.OK);
             }
+            return new MessageDto(StatusEnum.NO_ACCESS);
+        } else {
+            return new MessageDto(StatusEnum.BAD_REQUEST_TOKEN);
         }
-        return new MessageDto(StatusEnum.BAD_REQUEST_TOKEN);
     }
 
     // 유저 체크
-    public User validateUser(String token){
-        Claims claims;
+    public MessageDto validateUser(String token){
+        Claims claims = null;
 
         if (jwtUtil.validateToken(token)) {                 // token이 유효한 거면 생성 가능
             claims = jwtUtil.getUserInfoFromToken(token);   // 토큰에서 사용자 정보 가져오기
         } else {
-            throw new IllegalArgumentException("Token Error");
+            return new MessageDto(StatusEnum.BAD_REQUEST_TOKEN);
         }
 
-        User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                () -> new IllegalArgumentException("사용자가 존재하지 않습니다.")
-        );
 
-        return user;
+        User user = userRepository.findByUsername(claims.getSubject());
+        if(user == null){
+            return new MessageDto(StatusEnum.LOGIN_MATCH_FAIL);
+        }
+
+        return new UserDto(StatusEnum.OK, user);
     }
 
     // 작성자 일치 여부 체크 및 ADMIN 허가 적용
