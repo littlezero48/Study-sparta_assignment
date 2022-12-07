@@ -6,13 +6,16 @@ import com.example.assignment_memo.dto.SignupRequestDto;
 import com.example.assignment_memo.dto.StatusEnum;
 import com.example.assignment_memo.entity.User;
 import com.example.assignment_memo.entity.UserRoleEnum;
-import com.example.assignment_memo.jwt.JwtUtil;
 import com.example.assignment_memo.repository.UserRepository;
+import com.example.assignment_memo.util.error.CustomException;
+import com.example.assignment_memo.util.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
+
+import static com.example.assignment_memo.util.error.ErrorCode.EXIST_USER;
+import static com.example.assignment_memo.util.error.ErrorCode.LOGIN_MATCH_FAIL;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +30,9 @@ public class UserService {
         String password = dto.getPassword();
         UserRoleEnum role = ADMIN_TOKEN.equals(dto.getAdminToken()) ? UserRoleEnum.ADMIN : UserRoleEnum.USER ;
 
-        User existUser = userRepository.findByUsername(username);
-        if(existUser != null){
-            return new MessageDto(StatusEnum.EXIST_USER);
-        }
+        if(userRepository.findByUsername(username).isPresent()){
+            throw new CustomException(EXIST_USER);
+        };
 
         User user = new User(username, password, role);
         userRepository.save(user);
@@ -42,14 +44,13 @@ public class UserService {
         String username = dto.getUsername();
         String password = dto.getPassword();
 
-        Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
-        if (user.isEmpty()) {
-            return new MessageDto(StatusEnum.LOGIN_MATCH_FAIL);
-        }
+        User user = userRepository.findByUsernameAndPassword(username, password).orElseThrow(
+                ()-> new CustomException(LOGIN_MATCH_FAIL)
+        );
 
         // HTTP Header에 생성한 토큰을 붙여 보내기!
         //Optional은 값이 없을 때 값을 쓰려고 하면 예외 발생
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.get().getUsername(),  user.get().getRole()));  // 메소드사용하려면 의존성주입 먼저
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(),  user.getRole()));  // 메소드사용하려면 의존성주입 먼저
 
         return new MessageDto(StatusEnum.OK);
     }

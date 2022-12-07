@@ -1,4 +1,4 @@
-package com.example.assignment_memo.jwt;
+package com.example.assignment_memo.util.jwt;
 
 import com.example.assignment_memo.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
