@@ -117,7 +117,7 @@ public class MemoService {
         if(token != null) {
             User user = validateUser(token);
 
-            if (memo.getUsername().equals(user.getUsername()) || user.getRole() == UserRoleEnum.ADMIN) {
+            if(accessPermission(memo.getUsername(), user.getUsername(), user.getRole())) {
                 memo.update(dto);  // update는 entity에 새로 정의한 함수
 
                 MemoResponseDtoBuilder mrdBuilder = new MemoResponseDtoBuilder();
@@ -152,7 +152,7 @@ public class MemoService {
         if(token != null) {
             User user = validateUser(token);
 
-            if (memo.getUsername().equals(user.getUsername()) || user.getRole() == UserRoleEnum.ADMIN) {           // 유저 대조
+            if(accessPermission(memo.getUsername(), user.getUsername(), user.getRole())) {           // 유저 대조
                 memoRepository.deleteById(id);                                  // delete자체에 Transactional을 생기게 하는 로직이 있다
                 exportDto.setResult(200,"글 삭제");
             }
@@ -196,7 +196,7 @@ public class MemoService {
         if(token != null){
             User user = validateUser(token);
 
-            if(reply.getReplyName().equals(user.getUsername())){
+            if(accessPermission(reply.getReplyName(), user.getUsername(), user.getRole())) {
                 reply.update(dto);
                 exportDto = new ReplyResponseDto(reply);                               // Entity -> Dto로 전환
                 return exportDto;
@@ -218,7 +218,7 @@ public class MemoService {
         if(token != null){
             User user = validateUser(token);
 
-            if(reply.getReplyName().equals(user.getUsername())){
+            if(accessPermission(reply.getReplyName(), user.getUsername(), user.getRole())) {
                 replyRepository.deleteByReplyId(replyId);                            // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
                 exportDto = new PublicDto();                               // Entity -> Dto로 전환
                 exportDto.setResult(200,"글 삭제");
@@ -243,6 +243,15 @@ public class MemoService {
         );
 
         return user;
+    }
+
+    // 작성자 일치 여부 체크 및 ADMIN 허가 적용
+    public boolean accessPermission (String nameInEntity, String nameInRequest, UserRoleEnum role ){
+        if(nameInEntity.equals(nameInRequest) || role == UserRoleEnum.ADMIN){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
