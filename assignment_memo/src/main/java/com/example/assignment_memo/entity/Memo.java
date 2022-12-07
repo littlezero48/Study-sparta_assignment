@@ -28,7 +28,7 @@ public class Memo extends Timestamped {
     private String content;
 
     @OneToMany(mappedBy = "memo")
-    @OrderBy("modifiedAt desc ")    // 엔티티단에서 정렬
+    @OrderBy("createdAt desc ")    // 엔티티단에서 정렬
     private List<Reply> replies = new ArrayList<>(); // 일대다의 다 부분을 List로 받기
 
 //    @JsonIgnore                                         // 이 어노테이션을 쓰면 화면으로 가는 DTO에 노출되지 않는다.

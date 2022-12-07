@@ -29,7 +29,7 @@ public class MemoService {
 
     // 전체 글 조회
     public List<MemoResponseDto> getMemos(){
-        List<Memo> memolist = memoRepository.findAllByOrderByModifiedAtDesc(); // 아 여기서 데이터 값을 가져오는 메소드를 커스텀 하려면 리포지토리에서 작성해야 한다.
+        List<Memo> memolist = memoRepository.findAllByOrderByCreatedAtDesc(); // 아 여기서 데이터 값을 가져오는 메소드를 커스텀 하려면 리포지토리에서 작성해야 한다.
         List<MemoResponseDto> exportDtoList = new ArrayList<>();
 
         for(Memo memo : memolist){
