@@ -45,10 +45,10 @@ public class Memo extends Timestamped {
     // 타임스탬프는 extends 한 이후로 어떻게 쓰지? 자동으로 column 저장되나? 오 여기서 별도의 처리를 해주지 않아도 컬럼으로 추가된다.
     // 그런데 값이 안들어감. 실행클래스에서 @EnableJpaAuditing를 써야 시간 감시를 시작함 유효값이 들어가기 시작.
 
-    public Memo(MemoRequestDto dto, String username, User user){                    // 생성자
+    public Memo(MemoRequestDto dto, User user){                    // 생성자
 
         this.title = dto.getTitle();
-        this.username = username;
+        this.username = user.getUsername();
         this.content = dto.getContent();
         this.user = user;
 

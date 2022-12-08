@@ -82,7 +82,7 @@ public class MemoService {
         if(token != null){                                          //token없으면 글 생성 불가
             User user = validateUser(token);
 
-            Memo memo = new Memo(dto, user.getUsername(), user);        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
+            Memo memo = new Memo(dto, user);        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
             memoRepository.save(memo);                            // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
 
             MemoResponseDtoBuilder mrdBuilder = new MemoResponseDtoBuilder();
@@ -174,7 +174,7 @@ public class MemoService {
         if(token != null){
             User user = validateUser(token);
 
-            Reply newOne = new Reply (dto, user.getUsername(), memo);               // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
+            Reply newOne = new Reply (dto, user, memo);               // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
             replyRepository.save(newOne);                                           // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
             ReplyResponseDto responseDto = new ReplyResponseDto(newOne);            // Entity -> Dto로 전환
             return new MessageDto(StatusEnum.OK, responseDto);

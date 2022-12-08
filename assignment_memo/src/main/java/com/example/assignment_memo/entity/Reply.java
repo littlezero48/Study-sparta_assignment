@@ -20,16 +20,21 @@ public class Reply extends Timestamped{
     @JoinColumn(name = "MEMO_ID", nullable = false)
     private Memo memo; //객체로 연결해야해 필드 하나가 아니라
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(nullable = false)
     private String replyName;
 
     @Column(nullable = false)
     private String replyContent;
 
-    public Reply(ReplyRequestDto dto, String username, Memo memo){
+    public Reply(ReplyRequestDto dto, User user, Memo memo){
         this.memo = memo;
-        this.replyName = username;
+        this.replyName = user.getUsername();
         this.replyContent = dto.getReplyContent();
+        this.user = user;
     }
 
     public void update(ReplyRequestDto dto){
