@@ -63,20 +63,16 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests() // http의 권한 요청이
-                .antMatchers("/api/user/**").permitAll() // 이 특정 경로라면 모두 인증 절차 없이 permit
+                .antMatchers("/api/user/**").permitAll() // 이 특정 경로라면 (** 하위모든) 모두 인증 절차 없이 permit
                 .antMatchers("/api/memos").permitAll()
                 .anyRequest() // 설정한 경로 외의 모든 경로들은
                 .authenticated() // 인증된 사용자만이 접근가능
-                .and() // ???? 바로 addFilterBefore가 안걸리네 무슨 역할이지
+                .and() // ???? 바로 addFilterBefore가 안걸리네 무슨 역할이지? 다른 기능을 사용하고자 하면 and로 나누는 역할
                 // ***** addFilterBefore(A,B) B직전에 A필터가 걸리도록 한다
                 // ***** UsernamePasswordAuthenticationFilter 는 AbstractAuthenticationProcessingFilter를 상속한 Filter다.
                 // 기본적으로 Form Login 기반을 사용할 때 username 과 password 확인하여 인증
                 .addFilterBefore(new JwtUtilFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-//        http.formLogin().loginPage("/api/user/login-page").permitAll();
-//
-//        http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
-
-        return http.build(); //
+        return http.build(); //빌더한 것을 리턴하겠다
     }
 }
