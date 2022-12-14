@@ -7,9 +7,7 @@ import com.example.assignment_memo.entity.User;
 import com.example.assignment_memo.entity.UserRoleEnum;
 import com.example.assignment_memo.repository.MemoRepository;
 import com.example.assignment_memo.repository.ReplyRepository;
-import com.example.assignment_memo.repository.UserRepository;
 import com.example.assignment_memo.util.ApiResponse.CustomException;
-import com.example.assignment_memo.util.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,15 +22,13 @@ import static com.example.assignment_memo.util.ApiResponse.CodeError.NO_ACCESS;
 @RequiredArgsConstructor        // 생성자 자동 주입
 public class MemoService {
 
-    private final MemoRepository memoRepository;        // 메모 레포지토리를 사용할 수 있게 객체 선언 // 서비스든 컨트롤이든 클래스 연결할때 final 선언안해주면 오류남
-    private final UserRepository userRepository;
+    private final MemoRepository memoRepository;                               // 메모 레포지토리를 사용할 수 있게 객체 선언 // 서비스든 컨트롤이든 클래스 연결할때 final 선언안해주면 오류남
     private final ReplyRepository replyRepository;
-    private final JwtUtil jwtUtil;
 
 
     // 전체 글 조회
     public MessageDto getMemos(){
-        List<Memo> memolist = memoRepository.findAllByOrderByCreatedAtDesc(); // 아 여기서 데이터 값을 가져오는 메소드를 커스텀 하려면 리포지토리에서 작성해야 한다.
+        List<Memo> memolist = memoRepository.findAllByOrderByCreatedAtDesc();  // 아 여기서 데이터 값을 가져오는 메소드를 커스텀 하려면 리포지토리에서 작성해야 한다.
         List<MemoResponseDto> responseDtoList = new ArrayList<>();
 
         for(Memo memo : memolist){
@@ -45,7 +41,7 @@ public class MemoService {
                             .content(memo.getContent())
                             .createdAt(memo.getCreatedAt())
                             .modifiedAt(memo.getModifiedAt())
-                            .addReply(memo.getReplies())            // Entity -> Dto로 전환
+                            .addReply(memo.getReplies())                        // Entity -> Dto로 전환
                             .getMemos();
 
             responseDtoList.add(responseDto);
@@ -54,7 +50,7 @@ public class MemoService {
     }
 
     // 선택 글 조회 기능
-    public MessageDto getMemos(Long id){                            // 해당 글 하나만 읽기
+    public MessageDto getMemos(Long id){
         Memo memo = memoRepository.findById(id).orElseThrow(
                 () -> new CustomException(MEMO_NOT_FOUND)
         );
@@ -67,17 +63,17 @@ public class MemoService {
                         .content(memo.getContent())
                         .createdAt(memo.getCreatedAt())
                         .modifiedAt(memo.getModifiedAt())
-                        .addReply(memo.getReplies())                // Entity -> Dto로 전환
+                        .addReply(memo.getReplies())
                         .getMemos();
 
-        return new MessageDto(StatusEnum.OK, responseDto);          // Entity -> Dto로 전환
+        return new MessageDto(StatusEnum.OK, responseDto);
     }
 
     // 글 작성 기능
     public MessageDto createMemo(MemoRequestDto dto, User user){
 
-        Memo memo = new Memo(dto, user);        // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
-        memoRepository.save(memo);                            // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
+        Memo memo = new Memo(dto, user);                                    // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
+        memoRepository.save(memo);                                          // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
 
         MemoResponseDtoBuilder mrdBuilder = new MemoResponseDtoBuilder();
         MemoResponseDto responseDto =
@@ -89,7 +85,7 @@ public class MemoService {
                         .modifiedAt(memo.getModifiedAt())
                         .getMemos();
 
-        return new MessageDto(StatusEnum.OK, responseDto);                                      // 결과값을 다시 리턴
+        return new MessageDto(StatusEnum.OK, responseDto);
     }
 
     // 글 수정 기능
@@ -145,8 +141,8 @@ public class MemoService {
                 () -> new CustomException(MEMO_NOT_FOUND)
         );
 
-        Reply newOne = new Reply (dto, user, memo);               // 컨트롤러에서 @RequestBody 어노테이션으로 body의 내용을 가져온건데 또 할 필요 없겠지
-        replyRepository.save(newOne);                                           // insert   // save자체에 Transactional을 생기게 하는 로직이 있다
+        Reply newOne = new Reply (dto, user, memo);
+        replyRepository.save(newOne);                                           // save자체에 Transactional을 생기게 하는 로직이 있다
         ReplyResponseDto responseDto = new ReplyResponseDto(newOne);            // Entity -> Dto로 전환
         return new MessageDto(StatusEnum.OK, responseDto);
     }
@@ -160,7 +156,7 @@ public class MemoService {
 
         if(accessPermission(reply.getReplyName(), user.getUsername(), user.getRole())) {
             reply.update(dto);
-            ReplyResponseDto responseDto = new ReplyResponseDto(reply);                     // Entity -> Dto로 전환
+            ReplyResponseDto responseDto = new ReplyResponseDto(reply);
             return new MessageDto(StatusEnum.OK, responseDto);
         }
         throw new CustomException(NO_ACCESS);
@@ -168,7 +164,7 @@ public class MemoService {
 
     // 댓글 삭제 기능
     @Transactional
-    public MessageDto deleteReply(Long id, Long replyId, User user) {      // 부모클래스인 MessageDto로 리턴타입을 정하고 UserDto도 사용해 다형성 사용
+    public MessageDto deleteReply(Long id, Long replyId, User user) {            // 부모클래스인 MessageDto로 리턴타입을 정하고 UserDto도 사용해 다형성 사용
         Reply reply = replyRepository.findByMemo_MemoIdAndReplyId(id, replyId).orElseThrow(
                 () -> new CustomException(MEMO_NOT_FOUND)
         );
