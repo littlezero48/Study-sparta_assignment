@@ -31,7 +31,7 @@ public class JwtUtilFilter extends OncePerRequestFilter {
     // 토큰 유효 판별하는 공통 메소드
     // 여기서 httpServlet의 요청과 응답을 다 사용.
     // **** FilterChain : 요청(Request)과 응답(Response)에 대한 정보들을 변경할 수 있게 개발자들에게 제공하는 서블린 컨테이너
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(User user, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);   // 받아온 요청에서 토큰을 찾아 문자열 변수에 받음
 
         if(token != null) { // 토큰이 없으면 인증 처리 않고 다음으로

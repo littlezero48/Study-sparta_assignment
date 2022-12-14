@@ -23,13 +23,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<MessageDto> signup(@RequestBody @Valid SignupRequestDto dto){
+    public ApiResult signup(@RequestBody @Valid SignupRequestDto dto){
         MessageDto messageDto = userService.signup(dto);
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<MessageDto> login(@RequestBody LoginRequestDto dto, HttpServletResponse response){
+    public ApiResult login(@RequestBody LoginRequestDto dto, HttpServletResponse response){
         MessageDto messageDto = userService.login(dto, response);
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
