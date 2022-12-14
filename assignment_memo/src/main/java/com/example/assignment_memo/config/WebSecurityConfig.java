@@ -73,6 +73,6 @@ public class WebSecurityConfig {
                 // 기본적으로 Form Login 기반을 사용할 때 username 과 password 확인하여 인증
                 .addFilterBefore(new JwtUtilFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-        return http.build(); //빌더한 것을 리턴하겠다
+        return http.build(); //빌더한 것을 리턴
     }
 }

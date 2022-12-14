@@ -1,6 +1,6 @@
 package com.example.assignment_memo.util.jwt;
 
-import com.example.assignment_memo.util.error.CustomException;
+import com.example.assignment_memo.util.ApiResponse.CustomException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.assignment_memo.util.error.ErrorCode.INVALID_TOKEN;
+import static com.example.assignment_memo.util.ApiResponse.CodeError.INVALID_TOKEN;
 
 
 @Slf4j // 로그를 위한 어노테이션
@@ -37,7 +37,7 @@ public class JwtUtilFilter extends OncePerRequestFilter {
         if(token != null) { // 토큰이 없으면 인증 처리 않고 다음으로
             if(!jwtUtil.validateToken(token)){  // 유효한 토큰인지 판별
                 jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value()); // 유효하지 않으면 클라이언트가 권한이 없다 알린다.
-                return;
+                return;  //#####
             }
             Claims info = jwtUtil.getUserInfoFromToken(token);  // token의 정보 조각인 클레임을 가져옴
             setAuthentication(info.getSubject());   // 정보 subject안에 있는 내용을 토대로 SecurityContextHolder 안 SecurityContext에 인증객체을 넣어줌

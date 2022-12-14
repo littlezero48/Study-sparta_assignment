@@ -8,7 +8,7 @@ import com.example.assignment_memo.entity.UserRoleEnum;
 import com.example.assignment_memo.repository.MemoRepository;
 import com.example.assignment_memo.repository.ReplyRepository;
 import com.example.assignment_memo.repository.UserRepository;
-import com.example.assignment_memo.util.error.CustomException;
+import com.example.assignment_memo.util.ApiResponse.CustomException;
 import com.example.assignment_memo.util.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;

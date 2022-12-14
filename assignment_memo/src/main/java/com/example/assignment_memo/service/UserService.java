@@ -7,7 +7,7 @@ import com.example.assignment_memo.dto.StatusEnum;
 import com.example.assignment_memo.entity.User;
 import com.example.assignment_memo.entity.UserRoleEnum;
 import com.example.assignment_memo.repository.UserRepository;
-import com.example.assignment_memo.util.error.CustomException;
+import com.example.assignment_memo.util.ApiResponse.CustomException;
 import com.example.assignment_memo.util.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
