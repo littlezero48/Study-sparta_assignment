@@ -18,11 +18,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    // DB에서 유저 이름 불러오기
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)                                     // 해당 유저네임으로 정보 찾기
-                .orElseThrow(()-> new CustomException(MEMBER_NOT_FOUND));                       // 없으면 404에러
+        User user = userRepository.findByUsername(username)                                                             // 해당 유저네임으로 정보 찾기
+                .orElseThrow(()-> new CustomException(MEMBER_NOT_FOUND));
 
-        return new UserDetailsImpl(user, user.getUsername());                                   // 인증된 유저 정보를 담을 객체 생성
+        return new UserDetailsImpl(user, user.getUsername());                                                           // 인증된 유저 정보를 담을 객체 생성
     }
 }

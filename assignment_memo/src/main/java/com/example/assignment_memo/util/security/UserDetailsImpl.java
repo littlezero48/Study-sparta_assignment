@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
+// Impl은 Implements의 약자로 구현체
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;
@@ -27,11 +29,11 @@ public class UserDetailsImpl implements UserDetails {
     public String getUsername(){ return this.username; }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        UserRoleEnum role = user.getRole();                                         // 유저의 role을 가져와 role Enum에 대입
-        String authority = role.getAuthority();                                     // 그 role명에 맞는 문자열을 가져온다
+    public Collection<? extends GrantedAuthority> getAuthorities() {                                                    // 상한 경계 와일드 카드 GrantedAuthority랑 동등 혹 이하의 클래스만 가능
+        UserRoleEnum role = user.getRole();                                                                             // 유저의 role을 가져와 role Enum에 대입
+        String authority = role.getAuthority();                                                                         // 그 role명에 맞는 문자열을 가져온다
 
-        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);  // 권한 객체 생성
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);                          // 권한 객체 생성
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(simpleGrantedAuthority);
 

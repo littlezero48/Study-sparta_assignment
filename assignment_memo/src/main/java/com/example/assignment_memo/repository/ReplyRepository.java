@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
+// 댓글 레파지토리
 public interface ReplyRepository extends JpaRepository<Reply,Long> {
     Optional<Reply> findByMemo_MemoIdAndReplyId(Long id, Long replyId);
     void deleteByReplyId(Long replyId);

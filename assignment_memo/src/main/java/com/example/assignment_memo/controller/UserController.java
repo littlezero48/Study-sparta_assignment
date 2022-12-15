@@ -4,9 +4,10 @@ import com.example.assignment_memo.dto.LoginRequestDto;
 import com.example.assignment_memo.dto.MessageDto;
 import com.example.assignment_memo.dto.SignupRequestDto;
 import com.example.assignment_memo.service.UserService;
+import com.example.assignment_memo.util.ApiResponse.ApiResult;
+import com.example.assignment_memo.util.ApiResponse.ApiUtil;
+import com.example.assignment_memo.util.ApiResponse.CodeSuccess;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +26,12 @@ public class UserController {
     @PostMapping("/signup")
     public ApiResult signup(@RequestBody @Valid SignupRequestDto dto){
         MessageDto messageDto = userService.signup(dto);
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
+        return ApiUtil.successResponse(CodeSuccess.JOIN_OK, messageDto);
     }
 
     @PostMapping("/login")
     public ApiResult login(@RequestBody LoginRequestDto dto, HttpServletResponse response){
         MessageDto messageDto = userService.login(dto, response);
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
+        return ApiUtil.successResponse(CodeSuccess.JOIN_OK, messageDto);
     }
 }

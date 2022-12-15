@@ -18,6 +18,4 @@ public enum UserRoleEnum {
         public static final String USER = "ROLE_USER";
         public static final String ADMIN = "ROLE_ADMIN";
     }
-
-    // Enum 그자체도 구분이 될거 같은 데 왜 이런식으로 쓰지?
 }
