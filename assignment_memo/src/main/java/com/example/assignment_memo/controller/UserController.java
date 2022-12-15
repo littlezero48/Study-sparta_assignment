@@ -32,6 +32,6 @@ public class UserController {
     @PostMapping("/login")
     public ApiResult login(@RequestBody LoginRequestDto dto, HttpServletResponse response){
         MessageDto messageDto = userService.login(dto, response);
-        return ApiUtil.successResponse(CodeSuccess.JOIN_OK, messageDto);
+        return ApiUtil.successResponse(CodeSuccess.LOGIN_OK, messageDto);
     }
 }

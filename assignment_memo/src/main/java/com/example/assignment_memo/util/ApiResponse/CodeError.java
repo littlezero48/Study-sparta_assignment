@@ -15,7 +15,6 @@ public enum CodeError {
     LOGIN_MATCH_FAIL(HttpStatus.BAD_REQUEST, "회원을 찾을 수 없습니다."),
     BAD_ID_PASSWORD(HttpStatus.BAD_REQUEST, "아이디나 비밀번호의 구성이 알맞지 않습니다"),
 
-
     // 401 UNAUTHORIZED : 인증되지 않은 사용자
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다"),
     INVALID_AUTH_TOKEN(HttpStatus.UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),

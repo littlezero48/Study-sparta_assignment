@@ -1,7 +1,5 @@
 package com.example.assignment_memo.dto;
 
-import com.example.assignment_memo.entity.Reply;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +10,7 @@ public class MemoResponseDtoBuilder implements MemoResponseDtoBuilderInterface{
     private String title;
     private String username;
     private String content;
+    private Long likeCnt;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<ReplyResponseDto> replies = new ArrayList<>();
@@ -42,6 +41,12 @@ public class MemoResponseDtoBuilder implements MemoResponseDtoBuilderInterface{
     }
 
     @Override
+    public MemoResponseDtoBuilderInterface likeCnt(Long cnt) {
+        this.likeCnt = cnt;
+        return this;
+    }
+
+    @Override
     public MemoResponseDtoBuilderInterface createdAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
@@ -54,15 +59,13 @@ public class MemoResponseDtoBuilder implements MemoResponseDtoBuilderInterface{
     }
 
     @Override
-    public MemoResponseDtoBuilderInterface addReply(List<Reply> replies) {
-        for(int i=0; i<replies.size(); i++){
-            this.replies.add(new ReplyResponseDto(replies.get(i)));
-        }
+    public MemoResponseDtoBuilderInterface addReply(List<ReplyResponseDto> replies) {
+        this.replies = replies;
         return this;
     }
 
     @Override
     public MemoResponseDto getMemos() {
-        return new MemoResponseDto(id, title, username, content, createdAt, modifiedAt, replies);
+        return new MemoResponseDto(id, title, username, content, likeCnt, createdAt, modifiedAt, replies);
     }
 }
