@@ -184,7 +184,7 @@ public class MemoService {
         );
 
         // 3. 권한 체크 (작성자, ADMIN만 허가)
-        if (memo.getUsername().equals(user.getUsername()) || user.getRole() == UserRoleEnum.ADMIN) {
+        if (reply.getUser().getId().equals(user.getId()) || user.getRole() == UserRoleEnum.ADMIN) {
 
             // 4. 댓글 수정
             reply.update(dto);
@@ -209,7 +209,7 @@ public class MemoService {
         );
 
         // 3. 권한 체크 (작성자, ADMIN만 허가)
-        if (memo.getUsername().equals(user.getUsername()) || user.getRole() == UserRoleEnum.ADMIN) {
+        if (reply.getUser().getId().equals(user.getId()) || user.getRole() == UserRoleEnum.ADMIN) {
             // 4. 댓글 삭제
             replyRepository.deleteById(replyId);
 
@@ -281,7 +281,7 @@ public class MemoService {
         LikeReply like = new LikeReply(user, memo, reply);
         likeReplyRepository.save(like);
 
-        ReplyResponseDto responseDto = new ReplyResponseDto(reply, replyRepositoryImpl.countLikeFromLikeReply(like.getId()));
+        ReplyResponseDto responseDto = new ReplyResponseDto(reply, replyRepositoryImpl.countLikeFromLikeReply(replyId));
         return new MessageDto<>(CodeSuccess.CREATE_OK, responseDto);
     }
 

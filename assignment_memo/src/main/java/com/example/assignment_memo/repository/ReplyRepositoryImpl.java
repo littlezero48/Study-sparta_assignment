@@ -18,7 +18,7 @@ public class ReplyRepositoryImpl implements ReplyRepositoryCustom{
                 .select(likeReply.count())
                 .from(likeReply)
                 .where(
-                        likeReply.id.eq(replyId)
+                        likeReply.reply.id.eq(replyId)
                 )
                 .fetchFirst();
     }

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface LikeMemoRepository extends JpaRepository<LikeMemo, Long> {
-    Optional<LikeMemo> findAllByUserId(Long id);
-    void deleteByUserId(Long id);
-    Optional<LikeMemo> findByMemo_IdAndUser_Id(Long Id, Long userId);
+    Optional<LikeMemo> findAllById(Long id);
+    void deleteById(Long id);
+    Optional<LikeMemo> findByMemo_IdAndUser_Id(Long memoId, Long replyId);
 }

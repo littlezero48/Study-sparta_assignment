@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -58,11 +59,11 @@ public class WebSecurityConfig {
         // STATELESS : 스프링시큐리티가 생성하지도않고 기존것을 사용하지도 않음
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests() // http의 권한 요청이
+        http.authorizeRequests()                                                                                        // http의 권한 요청이
                 .antMatchers("/api/user/**").permitAll()                                                    // 이 특정 경로라면 (** 하위모든) 모두 인증 절차 없이 permit
-                .antMatchers("/api/memos").permitAll()
-                .anyRequest() // 설정한 경로 외의 모든 경로들은
-                .authenticated() // 인증된 사용자만이 접근가능
+                .antMatchers(HttpMethod.GET, "/**").permitAll()
+                .anyRequest()                                                                                           // 설정한 경로 외의 모든 경로들은
+                .authenticated()                                                                                        // 인증된 사용자만이 접근가능
                 .and()                                                                                                  // 다른 기능을 사용하고자 하면 and로 나누는 역할
                 // ***** addFilterBefore(A,B) B직전에 A필터가 걸리도록 한다
                 // ***** UsernamePasswordAuthenticationFilter 는 AbstractAuthenticationProcessingFilter를 상속한 Filter다.

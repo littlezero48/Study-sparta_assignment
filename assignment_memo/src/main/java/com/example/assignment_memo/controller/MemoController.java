@@ -25,14 +25,14 @@ public class MemoController {
     // 전체글 조회
     @GetMapping("/api/memos")
     public ApiResult getMemos (){                                                                                       // @RequestBody 어노테이션으로 body의 내용을 가져옴
-        MessageDto messageDto = memoService.getMemos();
+        MessageDto<?> messageDto = memoService.getMemos();
         return ApiUtil.successResponse(CodeSuccess.GET_OK, messageDto);
     }
 
     // 선택글 조회
     @GetMapping("/api/memos/{id}")
     public ApiResult getMemo (@PathVariable Long id){
-        MessageDto messageDto = memoService.getMemos(id);
+        MessageDto<?> messageDto = memoService.getMemos(id);
         return ApiUtil.successResponse(CodeSuccess.GET_OK, messageDto);
     }
 
@@ -41,7 +41,7 @@ public class MemoController {
     public ApiResult createMemo (
             @RequestBody MemoRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {                                                     // @AuthenticationPrincipal 를 통해 유효한 user 정보 객체를 가져와 사용
-        MessageDto messageDto = memoService.createMemo(dto, userDetails.getUser());
+        MessageDto<?> messageDto = memoService.createMemo(dto, userDetails.getUser());
         return ApiUtil.successResponse(CodeSuccess.CREATE_OK, messageDto);
     }
 
@@ -51,7 +51,7 @@ public class MemoController {
             @PathVariable Long id,
             @RequestBody MemoRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        MessageDto messageDto = memoService.modifyMemo(id, dto, userDetails.getUser());
+        MessageDto<?> messageDto = memoService.modifyMemo(id, dto, userDetails.getUser());
         return ApiUtil.successResponse(CodeSuccess.MODIFY_OK, messageDto);
     }
 
@@ -60,7 +60,7 @@ public class MemoController {
     public ApiResult deleteMemo(
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        MessageDto messageDto = memoService.deleteMemo(id, userDetails.getUser());
+        MessageDto<?> messageDto = memoService.deleteMemo(id, userDetails.getUser());
         return ApiUtil.successResponse(CodeSuccess.DELETE_OK, messageDto);
     }
 
@@ -72,7 +72,7 @@ public class MemoController {
             @PathVariable Long id,
             @RequestBody ReplyRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        MessageDto messageDto = memoService.createReply(id, dto, userDetails.getUser());
+        MessageDto<?> messageDto = memoService.createReply(id, dto, userDetails.getUser());
         return ApiUtil.successResponse(CodeSuccess.CREATE_OK, messageDto);
     }
 
@@ -83,7 +83,7 @@ public class MemoController {
             @PathVariable Long replyId,
             @RequestBody ReplyRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        MessageDto messageDto = memoService.modifyReply(id, replyId, dto, userDetails.getUser());
+        MessageDto<?> messageDto = memoService.modifyReply(id, replyId, dto, userDetails.getUser());
         return ApiUtil.successResponse(CodeSuccess.MODIFY_OK, messageDto);
     }
 
@@ -93,7 +93,7 @@ public class MemoController {
             @PathVariable Long id,
             @PathVariable Long replyId,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        MessageDto messageDto = memoService.deleteReply(id, replyId, userDetails.getUser());
+        MessageDto<?> messageDto = memoService.deleteReply(id, replyId, userDetails.getUser());
         return ApiUtil.successResponse(CodeSuccess.DELETE_OK, messageDto);
     }
 
@@ -104,7 +104,7 @@ public class MemoController {
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        MessageDto messageDto = memoService.hitMemoLike(id, userDetails.getUser());
+        MessageDto<?> messageDto = memoService.hitMemoLike(id, userDetails.getUser());
         return ApiUtil.successResponse(CodeSuccess.CREATE_OK, messageDto);
     }
 
@@ -114,7 +114,7 @@ public class MemoController {
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        MessageDto messageDto = memoService.cancelMemoLike(id, userDetails.getUser());
+        MessageDto<?> messageDto = memoService.cancelMemoLike(id, userDetails.getUser());
         return ApiUtil.successResponse(CodeSuccess.DELETE_OK, messageDto);
     }
 
@@ -125,7 +125,7 @@ public class MemoController {
             @PathVariable Long replyId,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        MessageDto messageDto = memoService.hitReplyLike(id, replyId, userDetails.getUser());
+        MessageDto<?> messageDto = memoService.hitReplyLike(id, replyId, userDetails.getUser());
         return ApiUtil.successResponse(CodeSuccess.CREATE_OK, messageDto);
     }
 
@@ -135,7 +135,7 @@ public class MemoController {
             @PathVariable Long id,
             @PathVariable Long replyId,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        MessageDto messageDto = memoService.cancelReplyLike(id, replyId, userDetails.getUser());
+        MessageDto<?> messageDto = memoService.cancelReplyLike(id, replyId, userDetails.getUser());
         return ApiUtil.successResponse(CodeSuccess.DELETE_OK, messageDto);
     }
 

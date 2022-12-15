@@ -6,7 +6,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static com.example.assignment_memo.util.ApiResponse.CodeError.BAD_ID_PASSWORD;
 import static com.example.assignment_memo.util.ApiResponse.CodeError.DUPLICATE_RESOURCE;
@@ -14,7 +13,7 @@ import static com.example.assignment_memo.util.ApiResponse.CodeError.DUPLICATE_R
 @Slf4j                                                                                                                  // 로깅
 @RestControllerAdvice                                                                                                   // @ControllerAdvice 는 프로젝트 전역에서 발생하는 모든 예외를 잡아준다
 // 전역 예외 처리 핸들러
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
     // h2 관련 예외 처리 핸들러
     @ExceptionHandler(value = { ConstraintViolationException.class, DataIntegrityViolationException.class})             // @ExceptionHandler 는 발생한 특정 예외를 잡아서 하나의 메소드에서 공통 처리할 수 있게 한다
