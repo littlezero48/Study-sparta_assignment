@@ -21,7 +21,7 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)                                                                                // Enum을 사용하며 어떤 방식으로 사용할지 설정 - 해당 문자열 그대로 사용
+    @Enumerated(value = EnumType.STRING)        // Enum을 사용하며 어떤 방식으로 사용할지 설정 - 해당 문자열 그대로 사용
     private UserRoleEnum role;
 
     @OneToMany(mappedBy = "user")

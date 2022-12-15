@@ -16,7 +16,7 @@ public class Memo extends Timestamped {
     @Id                                                                                                                 // ID임을 선언
     @Column(name = "MEMO_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)                                                                     // 값 자동 생성 , 생성 전략 : 자동 증감
-    private Long memoId;                                                                                                // long의 래퍼클래스
+    private Long id;                                                                                                // long의 래퍼클래스
 
     @Column(nullable = false)                                                                                           // 컬럼 설정 , null값 허용 선택 : 불가
     private String title;
@@ -41,17 +41,14 @@ public class Memo extends Timestamped {
 //    @Column(nullable = false)
 //    private String password;
 
-    public Memo(MemoRequestDto dto, User user){                    // 생성자
-
+    public Memo(MemoRequestDto dto, User user){         // 생성자
         this.title = dto.getTitle();
         this.username = user.getUsername();
         this.content = dto.getContent();
         this.user = user;
-
     }
 
     public void update(MemoRequestDto dto){             // 수정 메소드
-
         this.title = dto.getTitle();
         this.content = dto.getContent();
     }

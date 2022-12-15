@@ -97,6 +97,48 @@ public class MemoController {
         return ApiUtil.successResponse(CodeSuccess.DELETE_OK, messageDto);
     }
 
+    // ---------------좋아요 기능
+    // 글 좋아요 적용
+    @PostMapping("/api/memos/like/{id}")
+    public ApiResult hitMemoLike(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        MessageDto messageDto = memoService.hitMemoLike(id, userDetails.getUser());
+        return ApiUtil.successResponse(CodeSuccess.CREATE_OK, messageDto);
+    }
+
+    // 글 좋아요 취소
+    @DeleteMapping("/api/memos/like/{id}")
+    public ApiResult cancelTheLike(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        MessageDto messageDto = memoService.cancelMemoLike(id, userDetails.getUser());
+        return ApiUtil.successResponse(CodeSuccess.DELETE_OK, messageDto);
+    }
+
+    // 댓글 좋아요 적용
+    @PostMapping("/api/memos/like/{id}/{replyId}")
+    public ApiResult hitMemoLike(
+            @PathVariable Long id,
+            @PathVariable Long replyId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        MessageDto messageDto = memoService.hitReplyLike(id, replyId, userDetails.getUser());
+        return ApiUtil.successResponse(CodeSuccess.CREATE_OK, messageDto);
+    }
+
+    // 댓글 좋아요 취소
+    @DeleteMapping("/api/memos/like/{id}/{replyId}")
+    public ApiResult cancelTheLike(
+            @PathVariable Long id,
+            @PathVariable Long replyId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails){
+        MessageDto messageDto = memoService.cancelReplyLike(id, replyId, userDetails.getUser());
+        return ApiUtil.successResponse(CodeSuccess.DELETE_OK, messageDto);
+    }
+
 }
 
                                                                                                                         // Request가 들어오는 타입 따라 밥는 방법
