@@ -3,10 +3,12 @@ package com.example.assignment_memo.util.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import static com.example.assignment_memo.util.ApiResponse.CodeError.BAD_ID_PASSWORD;
 import static com.example.assignment_memo.util.ApiResponse.CodeError.DUPLICATE_RESOURCE;
 
 @Slf4j                                                                                                                  // 로깅
@@ -26,5 +28,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ApiResult handleCustomException(CustomException e) {                                                      // Exception 발생 시 넘겨받은 ErrorCode 를 사용해서 사용자에게 보여주는 에러 메세지를 정의
         log.error("handleCustomException throw CustomException : {}", e.getCodeError());
         return ApiUtil.errorResponse(e.getCodeError());
+    }
+
+    // Valid 예외 처리 핸들러
+    @ExceptionHandler(value= {MethodArgumentNotValidException.class})
+    protected ApiResult processValidationException(MethodArgumentNotValidException e){
+        log.error("handleCustomException throw CustomException : {}", e.getMessage());
+        return ApiUtil.errorResponse(BAD_ID_PASSWORD);
     }
 }

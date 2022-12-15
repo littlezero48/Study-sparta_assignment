@@ -13,6 +13,7 @@ public enum CodeError {
     BAD_REQUEST_TOKEN(HttpStatus.BAD_REQUEST, "토큰이 유효하지 않습니다."),
     EXIST_USER(HttpStatus.BAD_REQUEST, "중복된 username입니다."),
     LOGIN_MATCH_FAIL(HttpStatus.BAD_REQUEST, "회원을 찾을 수 없습니다."),
+    BAD_ID_PASSWORD(HttpStatus.BAD_REQUEST, "아이디나 비밀번호의 구성이 알맞지 않습니다"),
 
 
     // 401 UNAUTHORIZED : 인증되지 않은 사용자
